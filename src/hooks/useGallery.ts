@@ -253,21 +253,52 @@ export const useGallery = (filters?: GalleryFilter) => {
         };
         
         if (filters?.monat) {
-          filterParams.monat = { $eq: filters.monat };
+          filterParams.$or = [
+            { monat: { $eq: filters.monat } },
+            { reise_datum: { $contains: getMonthNumber(filters.monat) } }
+          ];
         }
         if (filters?.jahr) {
-          filterParams.jahr = { $eq: filters.jahr };
+          if (filterParams.$or) {
+            filterParams.$and = [
+              { $or: filterParams.$or },
+              { 
+                $or: [
+                  { jahr: { $eq: filters.jahr } },
+                  { reise_datum: { $contains: filters.jahr.toString() } }
+                ]
+              }
+            ];
+            delete filterParams.$or;
+          } else {
+            filterParams.$or = [
+              { jahr: { $eq: filters.jahr } },
+              { reise_datum: { $contains: filters.jahr.toString() } }
+            ];
+          }
         }
         if (filters?.ort) {
           filterParams.ort = { $containsi: filters.ort };
         }
         if (filters?.searchTerm) {
-          filterParams.$or = [
+          const searchFilter = [
             { titel: { $containsi: filters.searchTerm } },
             { beschreibung: { $containsi: filters.searchTerm } },
             { ort: { $containsi: filters.searchTerm } },
             { tags: { $containsi: filters.searchTerm } }
           ];
+          
+          if (filterParams.$and) {
+            filterParams.$and.push({ $or: searchFilter });
+          } else if (filterParams.$or) {
+            filterParams.$and = [
+              { $or: filterParams.$or },
+              { $or: searchFilter }
+            ];
+            delete filterParams.$or;
+          } else {
+            filterParams.$or = searchFilter;
+          }
         }
         
         // Gallery Images laden
@@ -362,13 +393,44 @@ export const useGallery = (filters?: GalleryFilter) => {
     fetchGalleryData();
   }, [filters?.monat, filters?.jahr, filters?.ort, filters?.searchTerm]);
 
+  // Helper function to convert German month names to numbers
+  const getMonthNumber = (monthName: string): string => {
+    const monthMap: { [key: string]: string } = {
+      'Januar': '01',
+      'Februar': '02',
+      'März': '03',
+      'April': '04',
+      'Mai': '05',
+      'Juni': '06',
+      'Juli': '07',
+      'August': '08',
+      'September': '09',
+      'Oktober': '10',
+      'November': '11',
+      'Dezember': '12'
+    };
+    return monthMap[monthName] || monthName;
+  };
+
   // Apply filters to mock data
   const applyFiltersToMockData = (images: GalleryImage[], filters?: GalleryFilter) => {
     if (!filters) return images;
     
     return images.filter(image => {
-      if (filters.monat && image.monat !== filters.monat) return false;
-      if (filters.jahr && image.jahr !== filters.jahr) return false;
+      // Filter by month - check both monat field and extracted from reise_datum
+      if (filters.monat) {
+        const monthMatches = image.monat === filters.monat || 
+          (image.reise_datum && extractMonthFromDate(image.reise_datum) === filters.monat);
+        if (!monthMatches) return false;
+      }
+      
+      // Filter by year - check both jahr field and extracted from reise_datum
+      if (filters.jahr) {
+        const yearMatches = image.jahr === filters.jahr || 
+          (image.reise_datum && extractYearFromDate(image.reise_datum) === filters.jahr);
+        if (!yearMatches) return false;
+      }
+      
       if (filters.ort && !image.ort.toLowerCase().includes(filters.ort.toLowerCase())) return false;
       if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
@@ -389,12 +451,22 @@ export const useGallery = (filters?: GalleryFilter) => {
   };
 
   const getUniqueMonths = () => {
-    const months = [...new Set(images.map(img => img.monat))];
+    const months = [...new Set(images.map(img => {
+      // Use monat field if available, otherwise extract from reise_datum
+      if (img.monat) return img.monat;
+      if (img.reise_datum) return extractMonthFromDate(img.reise_datum);
+      return null;
+    }).filter(month => month !== null))];
     return months.sort();
   };
 
   const getUniqueYears = () => {
-    const years = [...new Set(images.map(img => img.jahr))];
+    const years = [...new Set(images.map(img => {
+      // Use jahr field if available, otherwise extract from reise_datum
+      if (img.jahr) return img.jahr;
+      if (img.reise_datum) return extractYearFromDate(img.reise_datum);
+      return null;
+    }).filter(year => year !== null))];
     return years.sort((a, b) => b - a); // Newest first
   };
 
@@ -474,6 +546,48 @@ export const useGallery = (filters?: GalleryFilter) => {
       reise_datum: key,
       images: grouped[key].sort((a, b) => a.sortierung - b.sortierung)
     }));
+  };
+
+  // Helper functions for date extraction
+  const extractMonthFromDate = (dateString: string): string | null => {
+    if (!dateString) return null;
+    
+    // If it's an ISO date (2025-08-10)
+    if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+        return monthNames[date.getMonth()];
+      }
+    }
+    
+    // If it's already formatted (e.g., "Venedig November 2021")
+    const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                       'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    for (const month of monthNames) {
+      if (dateString.includes(month)) {
+        return month;
+      }
+    }
+    
+    return null;
+  };
+
+  const extractYearFromDate = (dateString: string): number | null => {
+    if (!dateString) return null;
+    
+    // If it's an ISO date (2025-08-10)
+    if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        return date.getFullYear();
+      }
+    }
+    
+    // Extract 4-digit year from formatted string
+    const yearMatch = dateString.match(/\b(\d{4})\b/);
+    return yearMatch ? parseInt(yearMatch[1]) : null;
   };
 
   return { 
