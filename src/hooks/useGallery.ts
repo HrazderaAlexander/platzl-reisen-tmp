@@ -253,32 +253,33 @@ export const useGallery = (filters?: GalleryFilter) => {
         };
         
         if (filters?.monat) {
-          // Filter by month extracted from reise_datum
-          const monthNumber = getMonthNumber(filters.monat);
-          filterParams.reise_datum = {
-            $contains: `-${monthNumber}-`
-          };
+          filterParams.$or = [
+            { monat: { $eq: filters.monat } },
+            { reise_datum: { $contains: getMonthNumber(filters.monat) } }
+          ];
         }
-        
         if (filters?.jahr) {
-          // Combine with existing filters using $and
-          if (filterParams.reise_datum) {
+          if (filterParams.$or) {
             filterParams.$and = [
-              { reise_datum: filterParams.reise_datum },
+              { $or: filterParams.$or },
+              { 
+                $or: [
+                  { jahr: { $eq: filters.jahr } },
+                  { reise_datum: { $contains: filters.jahr.toString() } }
+                ]
+              }
+            ];
+            delete filterParams.$or;
+          } else {
+            filterParams.$or = [
+              { jahr: { $eq: filters.jahr } },
               { reise_datum: { $contains: filters.jahr.toString() } }
             ];
-            delete filterParams.reise_datum;
-          } else {
-            filterParams.reise_datum = {
-              $contains: filters.jahr.toString()
-            };
           }
         }
-        
         if (filters?.ort) {
           filterParams.ort = { $containsi: filters.ort };
         }
-        
         if (filters?.searchTerm) {
           const searchFilter = [
             { titel: { $containsi: filters.searchTerm } },
@@ -289,6 +290,12 @@ export const useGallery = (filters?: GalleryFilter) => {
           
           if (filterParams.$and) {
             filterParams.$and.push({ $or: searchFilter });
+          } else if (filterParams.$or) {
+            filterParams.$and = [
+              { $or: filterParams.$or },
+              { $or: searchFilter }
+            ];
+            delete filterParams.$or;
           } else {
             filterParams.$or = searchFilter;
           }
@@ -305,7 +312,7 @@ export const useGallery = (filters?: GalleryFilter) => {
           }
         });
         
-        // Gallery Settings laden (unchanged)
+        // Gallery Settings laden
         const settingsResponse = await strapiApi.get('/galerie-konfiguration/get-or-create');
         
         console.log('=== GALLERY API RESPONSES ===');
@@ -410,15 +417,17 @@ export const useGallery = (filters?: GalleryFilter) => {
     if (!filters) return images;
     
     return images.filter(image => {
-      // Filter by month - only check extracted from reise_datum
+      // Filter by month - check both monat field and extracted from reise_datum
       if (filters.monat) {
-        const monthMatches = image.monat === filters.monat;
+        const monthMatches = image.monat === filters.monat || 
+          (image.reise_datum && extractMonthFromDate(image.reise_datum) === filters.monat);
         if (!monthMatches) return false;
       }
       
-      // Filter by year - only check extracted from reise_datum
+      // Filter by year - check both jahr field and extracted from reise_datum
       if (filters.jahr) {
-        const yearMatches = image.jahr === filters.jahr;
+        const yearMatches = image.jahr === filters.jahr || 
+          (image.reise_datum && extractYearFromDate(image.reise_datum) === filters.jahr);
         if (!yearMatches) return false;
       }
       
