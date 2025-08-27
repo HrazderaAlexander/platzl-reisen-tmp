@@ -19,11 +19,8 @@ export const useGallery = (filters?: GalleryFilter) => {
       beschreibung: 'Malerische Kanäle von Venedig',
       bild_url: 'https://images.pexels.com/photos/208701/pexels-photo-208701.jpeg?auto=compress&cs=tinysrgb&w=800',
       ort: 'Venedig',
-      monat: 'November',
-      jahr: 2021,
       reise_datum: 'November 2021',
       favorit: true,
-      tags: ['venedig', 'kanal', 'gondel'],
       sortierung: 0,
       aktiv: true,
       created_at: '2021-11-15T10:00:00Z',
@@ -35,11 +32,8 @@ export const useGallery = (filters?: GalleryFilter) => {
       beschreibung: 'Traditionelle Gondeln in Venedig',
       bild_url: 'https://images.pexels.com/photos/161901/paris-sunset-france-monument-161901.jpeg?auto=compress&cs=tinysrgb&w=800',
       ort: 'Venedig',
-      monat: 'November',
-      jahr: 2021,
       reise_datum: 'November 2021',
       favorit: false,
-      tags: ['venedig', 'gondel', 'transport'],
       sortierung: 1,
       aktiv: true,
       created_at: '2021-11-15T11:00:00Z',
@@ -252,12 +246,6 @@ export const useGallery = (filters?: GalleryFilter) => {
           aktiv: true
         };
         
-        if (filters?.monat) {
-          filterParams.monat = { $eq: filters.monat };
-        }
-        if (filters?.jahr) {
-          filterParams.jahr = { $eq: filters.jahr };
-        }
         if (filters?.ort) {
           filterParams.ort = { $containsi: filters.ort };
         }
@@ -265,8 +253,7 @@ export const useGallery = (filters?: GalleryFilter) => {
           filterParams.$or = [
             { titel: { $containsi: filters.searchTerm } },
             { beschreibung: { $containsi: filters.searchTerm } },
-            { ort: { $containsi: filters.searchTerm } },
-            { tags: { $containsi: filters.searchTerm } }
+            { ort: { $containsi: filters.searchTerm } }
           ];
         }
         
@@ -293,21 +280,17 @@ export const useGallery = (filters?: GalleryFilter) => {
           const transformedImages: GalleryImage[] = imagesResponse.data.data.map((image: any) => {
             const imageData = image.attributes || image;
             
-            // Extract date information from reise_datum
-            let monat = '';
-            let jahr = new Date().getFullYear();
+            // Extract date information from reise_datum for display
+            let displayMonth = '';
+            let displayYear = new Date().getFullYear();
             
             if (imageData.reise_datum) {
               const date = new Date(imageData.reise_datum);
               const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-              monat = monthNames[date.getMonth()];
-              jahr = date.getFullYear();
+              displayMonth = monthNames[date.getMonth()];
+              displayYear = date.getFullYear();
             }
-            
-            // Override with manual fields if provided
-            if (imageData.monat) monat = imageData.monat;
-            if (imageData.jahr) jahr = imageData.jahr;
             
             return {
               id: image.id.toString(),
@@ -315,11 +298,8 @@ export const useGallery = (filters?: GalleryFilter) => {
               beschreibung: imageData.beschreibung || '',
               bild_url: dataTransformers.getMediaUrl(imageData.bild),
               ort: imageData.ort || '',
-              monat: monat,
-              jahr: jahr,
               reise_datum: imageData.reise_datum || '',
               favorit: imageData.favorit || false,
-              tags: imageData.tags || [],
               sortierung: imageData.sortierung || 0,
               aktiv: imageData.aktiv !== false,
               created_at: imageData.createdAt || new Date().toISOString(),
@@ -367,16 +347,13 @@ export const useGallery = (filters?: GalleryFilter) => {
     if (!filters) return images;
     
     return images.filter(image => {
-      if (filters.monat && image.monat !== filters.monat) return false;
-      if (filters.jahr && image.jahr !== filters.jahr) return false;
       if (filters.ort && !image.ort.toLowerCase().includes(filters.ort.toLowerCase())) return false;
       if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
         return (
           image.titel.toLowerCase().includes(searchLower) ||
           image.beschreibung?.toLowerCase().includes(searchLower) ||
-          image.ort.toLowerCase().includes(searchLower) ||
-          image.tags.some(tag => tag.toLowerCase().includes(searchLower))
+          image.ort.toLowerCase().includes(searchLower)
         );
       }
       return true;
@@ -389,12 +366,25 @@ export const useGallery = (filters?: GalleryFilter) => {
   };
 
   const getUniqueMonths = () => {
-    const months = [...new Set(images.map(img => img.monat))];
+    const months = [...new Set(images.map(img => {
+      if (img.reise_datum) {
+        const date = new Date(img.reise_datum);
+        const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+        return monthNames[date.getMonth()];
+      }
+      return '';
+    }).filter(month => month))];
     return months.sort();
   };
 
   const getUniqueYears = () => {
-    const years = [...new Set(images.map(img => img.jahr))];
+    const years = [...new Set(images.map(img => {
+      if (img.reise_datum) {
+        return new Date(img.reise_datum).getFullYear();
+      }
+      return new Date().getFullYear();
+    }))];
     return years.sort((a, b) => b - a); // Newest first
   };
 
@@ -405,7 +395,17 @@ export const useGallery = (filters?: GalleryFilter) => {
 
   const getImagesByReiseDatum = () => {
     const grouped = images.reduce((acc, image) => {
-      const key = image.reise_datum;
+      // Create display key from reise_datum
+      let key = image.reise_datum;
+      if (image.reise_datum) {
+        const date = new Date(image.reise_datum);
+        const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+        key = `${month} ${year}`;
+      }
+      
       if (!acc[key]) {
         acc[key] = [];
       }
@@ -413,18 +413,17 @@ export const useGallery = (filters?: GalleryFilter) => {
       return acc;
     }, {} as Record<string, GalleryImage[]>);
     
-    // Sort by year and month
+    // Sort by date
     const sortedKeys = Object.keys(grouped).sort((a, b) => {
-      const [monthA, yearA] = a.split(' ');
-      const [monthB, yearB] = b.split(' ');
+      // Find the first image in each group to get the actual date for sorting
+      const imageA = grouped[a][0];
+      const imageB = grouped[b][0];
       
-      if (yearA !== yearB) {
-        return parseInt(yearB) - parseInt(yearA); // Newest year first
+      if (imageA.reise_datum && imageB.reise_datum) {
+        return new Date(imageB.reise_datum).getTime() - new Date(imageA.reise_datum).getTime();
       }
       
-      const monthOrder = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
-                         'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-      return monthOrder.indexOf(monthB) - monthOrder.indexOf(monthA); // Newest month first
+      return b.localeCompare(a);
     });
     
     return sortedKeys.map(key => ({

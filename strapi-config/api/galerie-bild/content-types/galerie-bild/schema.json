@@ -35,23 +35,9 @@
       "type": "string",
       "required": false,
       "maxLength": 50
-    },
-    "jahr": {
-      "type": "integer",
-      "required": false,
-      "min": 2000,
-      "max": 2100
-    },
-    "reise_datum": {
-      "type": "date",
-      "required": true
-    },
     "favorit": {
       "type": "boolean",
       "default": false
-    },
-    "tags": {
-      "type": "json"
     },
     "sortierung": {
       "type": "integer",

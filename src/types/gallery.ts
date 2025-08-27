@@ -4,11 +4,8 @@ export interface GalleryImage {
   beschreibung?: string;
   bild_url: string;
   ort: string;
-  monat: string;
-  jahr: number; // Bleibt number, wird aus Strapi number field gelesen
   reise_datum: string; // ISO date string from Strapi date field
   favorit: boolean;
-  tags: string[];
   sortierung: number;
   aktiv: boolean;
   created_at: string;
@@ -25,8 +22,8 @@ export interface GallerySettings {
 }
 
 export interface GalleryFilter {
-  monat?: string;
-  jahr?: number;
+  month?: string;
+  year?: number;
   ort?: string;
   searchTerm?: string;
 }
