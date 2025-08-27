@@ -15,12 +15,12 @@ export default factories.createCoreController('api::galerie-konfiguration.galeri
     const { data } = ctx.request.body;
 
     // For single types, we need to find the existing entity first
-    const existingEntities = await strapi.entityService.findMany('api::galerie-konfiguration.galerie-konfiguration');
+    const existingEntity = await strapi.entityService.findMany('api::galerie-konfiguration.galerie-konfiguration');
     
     let entity;
-    if (existingEntities && existingEntities.length > 0) {
+    if (existingEntity && existingEntity.id) {
       // Update existing entity
-      entity = await strapi.entityService.update('api::galerie-konfiguration.galerie-konfiguration', existingEntities[0].id, {
+      entity = await strapi.entityService.update('api::galerie-konfiguration.galerie-konfiguration', existingEntity.id, {
         data,
       });
     } else {
@@ -54,8 +54,13 @@ export default factories.createCoreController('api::galerie-konfiguration.galeri
   async getOrCreate(ctx: any) {
     const existing = await strapi.entityService.findMany('api::galerie-konfiguration.galerie-konfiguration');
     
-    if (existing && existing.length > 0) {
-      return { data: existing[0] };
+    if (existing) {
+      // If existing is an array, return the first element; otherwise, return the object itself
+      if (Array.isArray(existing) && existing.length > 0) {
+        return { data: existing[0] };
+      } else if (!Array.isArray(existing)) {
+        return { data: existing };
+      }
     }
     
     // Create default configuration
