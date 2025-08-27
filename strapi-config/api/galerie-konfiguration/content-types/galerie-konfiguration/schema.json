@@ -3,7 +3,7 @@
   "collectionName": "galerie_konfiguration",
   "info": {
     "singularName": "galerie-konfiguration",
-    "pluralName": "galerie-konfiguration",
+    "pluralName": "galerie-konfigurations",
     "displayName": "Galerie Konfiguration",
     "description": "Konfiguration für die Galerie"
   },
