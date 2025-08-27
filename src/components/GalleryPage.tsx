@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { ArrowLeft, Camera, Filter, Search, MapPin, Calendar, Eye, X, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
 import { useGallery } from '../hooks/useGallery';
 import { GalleryFilter } from '../types/gallery';
@@ -17,6 +16,12 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   
   const { images, gallerySettings, loading, error, usingMockData, getImagesByReiseDatum, getUniqueMonths, getUniqueYears, getUniqueLocations } = useGallery(filters);
 
+  // Memoize expensive calculations to prevent re-running on every keystroke
+  const groupedImages = useMemo(() => getImagesByReiseDatum(), [images]);
+  const uniqueMonths = useMemo(() => getUniqueMonths(), [images]);
+  const uniqueYears = useMemo(() => getUniqueYears(), [images]);
+  const uniqueLocations = useMemo(() => getUniqueLocations(), [images]);
+
   // Debounce function for search
   const debounceSearch = useCallback(
     (() => {
@@ -28,7 +33,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
             ...prev,
             searchTerm: searchTerm || undefined
           }));
-        }, 500); // 500ms delay
+        }, 1000); // 500ms delay
       };
     })(),
     []
@@ -41,10 +46,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   };
 
   const handleFilterChange = (key: keyof GalleryFilter, value: any) => {
-    if (key === 'searchTerm') {
-      handleSearchChange(value);
-      return;
-    }
     setFilters(prev => ({
       ...prev,
       [key]: value || undefined
@@ -57,8 +58,10 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   };
 
   const openImageModal = (image: any, index: number) => {
+    // Find the global index in the unfiltered `images` array for correct navigation
+    const globalIndex = images.findIndex(img => img.id === image.id);
     setSelectedImage(image);
-    setCurrentImageIndex(index);
+    setCurrentImageIndex(globalIndex);
   };
 
   const closeImageModal = () => {
@@ -66,13 +69,15 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   };
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    setSelectedImage(images[currentImageIndex + 1] || images[0]);
+    const nextIndex = (currentImageIndex + 1) % images.length;
+    setCurrentImageIndex(nextIndex);
+    setSelectedImage(images[nextIndex]);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-    setSelectedImage(images[currentImageIndex - 1] || images[images.length - 1]);
+    const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
+    setCurrentImageIndex(prevIndex);
+    setSelectedImage(images[prevIndex]);
   };
 
   if (loading) {
@@ -97,7 +102,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
     );
   }
 
-  const groupedImages = getImagesByReiseDatum();
   const hasActiveFilters = Object.values(filters).some(value => value !== undefined && value !== '');
   const hasVisibleFilters = searchInput || filters.monat || filters.jahr || filters.ort;
 
@@ -188,12 +192,13 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     Suchbegriff
                   </label>
                   <input
+                    key="gallery-search-input" // <-- DIESE ZEILE HINZUFÜGEN
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm"
                     placeholder="Suchen..."
-                    value={filters.searchTerm || ''}
-                    onChange={(e) => handleFilterChange('searchTerm', e.target.value)}
-                  />
+                    value={searchInput}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -205,7 +210,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     onChange={(e) => handleFilterChange('monat', e.target.value)}
                   >
                     <option value="">Alle Monate</option>
-                    {getUniqueMonths().map(month => (
+                    {uniqueMonths.map(month => (
                       <option key={month} value={month}>{month}</option>
                     ))}
                   </select>
@@ -220,7 +225,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     onChange={(e) => handleFilterChange('jahr', e.target.value ? parseInt(e.target.value) : undefined)}
                   >
                     <option value="">Alle Jahre</option>
-                    {getUniqueYears().map(year => (
+                    {uniqueYears.map(year => (
                       <option key={year} value={year}>{year}</option>
                     ))}
                   </select>
@@ -235,7 +240,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     onChange={(e) => handleFilterChange('ort', e.target.value)}
                   >
                     <option value="">Alle Orte</option>
-                    {getUniqueLocations().map(location => (
+                    {uniqueLocations.map(location => (
                       <option key={location} value={location}>{location}</option>
                     ))}
                   </select>
@@ -286,28 +291,24 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
       {/* Gallery Content */}
       <div className="container mx-auto px-4 pb-12">
         <div className="max-w-6xl mx-auto">
-          {/* Sidebar mit Archiv */}
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Main Gallery */}
             <div className="lg:col-span-3">
               {groupedImages.length > 0 ? (
                 <div className="space-y-12">
-                  {groupedImages.map((group, groupIndex) => (
+                  {groupedImages.map((group) => (
                     <div key={group.reise_datum} className="space-y-6">
-                      {/* Reise Datum Header */}
                       <div className="text-center">
                         <h2 className="text-2xl font-bold text-accent mb-2 uppercase">
                           {group.reise_datum}
                         </h2>
                         <div className="w-20 h-1 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full"></div>
                       </div>
-
-                      {/* Images Grid */}
                       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {group.images.map((image, imageIndex) => (
+                        {group.images.map((image) => (
                           <div
                             key={image.id}
-                            onClick={() => openImageModal(image, imageIndex)}
+                            onClick={() => openImageModal(image, 0)} // Index here is local, handle global index in the function
                             className="group bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
                           >
                             <div className="relative aspect-square overflow-hidden">
@@ -317,22 +318,17 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                               />
                               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                              
-                              {/* Favorit Badge */}
                               {image.favorit && (
                                 <div className="absolute top-2 right-2 bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">
                                   ⭐
                                 </div>
                               )}
-                              
-                              {/* Hover Overlay */}
                               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg">
                                   <Eye className="h-4 w-4" />
                                 </div>
                               </div>
                             </div>
-                            
                             <div className="p-4">
                               <h3 className="font-semibold text-gray-800 text-sm mb-1 group-hover:text-accent transition-colors duration-300">
                                 {image.titel}
@@ -376,9 +372,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 sticky top-8">
                 <h3 className="text-lg font-bold text-accent mb-4">{gallerySettings.archiv_titel}</h3>
-                
                 <div className="space-y-4">
-                  {getUniqueYears().map(year => {
+                  {uniqueYears.map(year => {
                     const yearImages = images.filter(img => img.jahr === year);
                     const yearMonths = [...new Set(yearImages.map(img => img.monat))];
                     
@@ -393,7 +388,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                             return (
                               <div key={`${year}-${month}`} className="space-y-1">
                                 <button
-                                  onClick={() => setFilters({ monat: month, jahr: year })}
+                                  onClick={() => setFilters({ monat: month, jahr: year, ort: undefined })}
                                   className="text-accent hover:text-accent/80 font-medium text-sm transition-colors duration-300 flex items-center"
                                 >
                                   <Calendar className="h-3 w-3 mr-1" />
@@ -434,7 +429,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             />
             
-            {/* Navigation */}
             <button
               onClick={prevImage}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
@@ -449,7 +443,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               <ChevronRight className="h-6 w-6" />
             </button>
             
-            {/* Close Button */}
             <button
               onClick={closeImageModal}
               className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 text-2xl"
@@ -457,7 +450,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               ×
             </button>
             
-            {/* Image Info */}
             <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white p-4 rounded-lg max-w-md">
               <h3 className="font-bold mb-1">{selectedImage.titel}</h3>
               {selectedImage.beschreibung && (
