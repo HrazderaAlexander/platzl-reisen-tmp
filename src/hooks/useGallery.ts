@@ -253,33 +253,32 @@ export const useGallery = (filters?: GalleryFilter) => {
         };
         
         if (filters?.monat) {
-          filterParams.$or = [
-            { monat: { $eq: filters.monat } },
-            { reise_datum: { $contains: getMonthNumber(filters.monat) } }
-          ];
+          // Filter by month extracted from reise_datum
+          const monthNumber = getMonthNumber(filters.monat);
+          filterParams.reise_datum = {
+            $contains: `-${monthNumber}-`
+          };
         }
+        
         if (filters?.jahr) {
-          if (filterParams.$or) {
+          // Combine with existing filters using $and
+          if (filterParams.reise_datum) {
             filterParams.$and = [
-              { $or: filterParams.$or },
-              { 
-                $or: [
-                  { jahr: { $eq: filters.jahr } },
-                  { reise_datum: { $contains: filters.jahr.toString() } }
-                ]
-              }
-            ];
-            delete filterParams.$or;
-          } else {
-            filterParams.$or = [
-              { jahr: { $eq: filters.jahr } },
+              { reise_datum: filterParams.reise_datum },
               { reise_datum: { $contains: filters.jahr.toString() } }
             ];
+            delete filterParams.reise_datum;
+          } else {
+            filterParams.reise_datum = {
+              $contains: filters.jahr.toString()
+            };
           }
         }
+        
         if (filters?.ort) {
           filterParams.ort = { $containsi: filters.ort };
         }
+        
         if (filters?.searchTerm) {
           const searchFilter = [
             { titel: { $containsi: filters.searchTerm } },
@@ -290,10 +289,6 @@ export const useGallery = (filters?: GalleryFilter) => {
           
           if (filterParams.$and) {
             filterParams.$and.push({ $or: searchFilter });
-          } else if (filterParams.$or) {
-            filterParams.$and = [
-              { $or: filterParams.$or },
-              { $or: searchFilter }
             ];
             delete filterParams.$or;
           } else {
@@ -312,7 +307,7 @@ export const useGallery = (filters?: GalleryFilter) => {
           }
         });
         
-        // Gallery Settings laden
+        // Gallery Settings laden (unchanged)
         const settingsResponse = await strapiApi.get('/galerie-konfiguration/get-or-create');
         
         console.log('=== GALLERY API RESPONSES ===');
@@ -417,17 +412,15 @@ export const useGallery = (filters?: GalleryFilter) => {
     if (!filters) return images;
     
     return images.filter(image => {
-      // Filter by month - check both monat field and extracted from reise_datum
+      // Filter by month - only check extracted from reise_datum
       if (filters.monat) {
-        const monthMatches = image.monat === filters.monat || 
-          (image.reise_datum && extractMonthFromDate(image.reise_datum) === filters.monat);
+        const monthMatches = image.monat === filters.monat;
         if (!monthMatches) return false;
       }
       
-      // Filter by year - check both jahr field and extracted from reise_datum
+      // Filter by year - only check extracted from reise_datum
       if (filters.jahr) {
-        const yearMatches = image.jahr === filters.jahr || 
-          (image.reise_datum && extractYearFromDate(image.reise_datum) === filters.jahr);
+        const yearMatches = image.jahr === filters.jahr;
         if (!yearMatches) return false;
       }
       
@@ -451,22 +444,12 @@ export const useGallery = (filters?: GalleryFilter) => {
   };
 
   const getUniqueMonths = () => {
-    const months = [...new Set(images.map(img => {
-      // Use monat field if available, otherwise extract from reise_datum
-      if (img.monat) return img.monat;
-      if (img.reise_datum) return extractMonthFromDate(img.reise_datum);
-      return null;
-    }).filter(month => month !== null))];
+    const months = [...new Set(images.map(img => img.monat).filter(month => month && month !== 'Unbekannt'))];
     return months.sort();
   };
 
   const getUniqueYears = () => {
-    const years = [...new Set(images.map(img => {
-      // Use jahr field if available, otherwise extract from reise_datum
-      if (img.jahr) return img.jahr;
-      if (img.reise_datum) return extractYearFromDate(img.reise_datum);
-      return null;
-    }).filter(year => year !== null))];
+    const years = [...new Set(images.map(img => img.jahr).filter(year => year && year > 2000))];
     return years.sort((a, b) => b - a); // Newest first
   };
 
@@ -479,30 +462,12 @@ export const useGallery = (filters?: GalleryFilter) => {
     const grouped = images.reduce((acc, image) => {
       // Create display format: "Ort Monat Jahr"
       let displayFormat = '';
-      
-      if (image.reise_datum && image.reise_datum !== '' && !image.reise_datum.includes(' ')) {
-        // Extract from date field if it's a proper date
+          // Extract date information from reise_datum only
+          let monat = 'Unbekannt';
+          let jahr = new Date().getFullYear();
         try {
-          const date = new Date(image.reise_datum);
-          if (!isNaN(date.getTime())) {
-            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
-                             'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-            const month = monthNames[date.getMonth()];
-            const year = date.getFullYear();
-            displayFormat = `${image.ort} ${month} ${year}`;
-          } else {
-            displayFormat = image.reise_datum;
-          }
-        } catch (e) {
-          displayFormat = image.reise_datum;
-        }
-      } else if (image.reise_datum && image.reise_datum.includes(' ')) {
-        // Already formatted
-        displayFormat = image.reise_datum;
-      } else {
-        // Fallback: construct from individual fields
-        displayFormat = `${image.ort} ${image.monat} ${image.jahr}`;
-      }
+      // Create display format: "Ort Monat Jahr" from extracted data
+      const displayFormat = `${image.ort} ${image.monat} ${image.jahr}`;
       
       const key = displayFormat;
       if (!acc[key]) {
