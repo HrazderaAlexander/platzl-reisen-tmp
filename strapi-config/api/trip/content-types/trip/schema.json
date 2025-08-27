@@ -1,0 +1,80 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trips",
+  "info": {
+    "singularName": "trip",
+    "pluralName": "trips",
+    "displayName": "Reise",
+    "description": "Reisen (Thermen- und Besichtigungsreisen)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true,
+      "maxLength": 500
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["therme", "sightseeing"],
+      "required": true
+    },
+    "featured_date": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "base_price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "included_items": {
+      "type": "json",
+      "required": false
+    },
+    "therme_title": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "therme_description": {
+      "type": "text"
+    },
+    "therme_relaxation": {
+      "type": "text"
+    },
+    "therme_therapy": {
+      "type": "text"
+    },
+    "therme_wellness": {
+      "type": "text"
+    },
+    "therme_info": {
+      "type": "text"
+    },
+    "hotels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::hotel.hotel",
+      "mappedBy": "trip"
+    },
+    "trip_dates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::trip-date.trip-date",
+      "mappedBy": "trip"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hotels",
+  "info": {
+    "singularName": "hotel",
+    "pluralName": "hotels",
+    "displayName": "Hotel",
+    "description": "Hotels für Reisen"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "stars": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 5
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "facilities": {
+      "type": "json",
+      "required": false
+    },
+    "sort_order": {
+      "type": "integer",
+      "default": 0
+    },
+    "trip": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::trip.trip",
+      "inversedBy": "hotels"
+    }
+  }
+}

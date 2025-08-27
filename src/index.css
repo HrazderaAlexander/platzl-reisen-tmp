@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .border-b-3 {
+    border-bottom-width: 3px;
+  }
+  
+  /* Therme Content Styling */
+  .therme-content {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .therme-content h1,
+  .therme-content h2 {
+    @apply text-2xl font-bold text-gray-800 mb-4 mt-6 border-b border-gray-200 pb-2;
+  }
+  
+  .therme-content h3 {
+    @apply text-xl font-bold text-gray-800 mb-3 mt-5;
+  }
+  
+  .therme-content h4 {
+    @apply text-lg font-semibold text-gray-800 mb-2 mt-4;
+  }
+  
+  .therme-content h5,
+  .therme-content h6 {
+    @apply text-base font-semibold text-gray-800 mb-2 mt-3;
+  }
+  
+  .therme-content p {
+    @apply text-gray-700 leading-relaxed mb-4 text-base;
+  }
+  
+  .therme-content ul,
+  .therme-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+  
+  .therme-content li {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .therme-content ul li {
+    @apply list-disc;
+  }
+  
+  .therme-content ol li {
+    @apply list-decimal;
+  }
+  
+  .therme-content strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .therme-content em {
+    @apply italic;
+  }
+  
+  .therme-content a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .therme-content blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4;
+  }
+  
+  /* Styled boxes for important info - enhanced */
+  .therme-content div[style*="background-color"],
+  .therme-content .info-box {
+    @apply rounded-xl border-l-4 border-blue-400 shadow-sm my-6 overflow-hidden;
+  }
+  
+  .therme-content div[style*="background-color"] h4,
+  .therme-content div[style*="background-color"] h3,
+  .therme-content .info-box h4,
+  .therme-content .info-box h3 {
+    @apply mt-0 mb-2 text-gray-800 font-bold;
+  }
+  
+  .therme-content div[style*="background-color"] p,
+  .therme-content .info-box p {
+    @apply mb-2 last:mb-0;
+  }
+
+  /* Impressum Content Styling */
+  .impressum-content {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .impressum-content h1 {
+    @apply text-2xl font-bold text-gray-800 mb-6 mt-8;
+  }
+  
+  .impressum-content h2 {
+    @apply text-xl font-bold text-gray-800 mb-4 mt-8;
+  }
+  
+  .impressum-content h3 {
+    @apply text-lg font-bold text-gray-800 mb-3 mt-6;
+  }
+  
+  .impressum-content p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  
+  .impressum-content strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .impressum-content em {
+    @apply italic;
+  }
+  
+  .impressum-content a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .impressum-content ul,
+  .impressum-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+  
+  .impressum-content li {
+    @apply text-gray-700 leading-relaxed list-disc;
+  }
+
+  /* Reiseversicherung Content Styling */
+  .reiseversicherung-content {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .reiseversicherung-content h1 {
+    @apply text-2xl font-bold text-gray-800 mb-6 mt-8;
+  }
+  
+  .reiseversicherung-content h2 {
+    @apply text-xl font-bold text-gray-800 mb-4 mt-6;
+  }
+  
+  .reiseversicherung-content h3 {
+    @apply text-lg font-bold text-gray-800 mb-3 mt-4;
+  }
+  
+  .reiseversicherung-content p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  
+  .reiseversicherung-content strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .reiseversicherung-content em {
+    @apply italic;
+  }
+  
+  .reiseversicherung-content a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .reiseversicherung-content ul,
+  .reiseversicherung-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+  
+  .reiseversicherung-content li {
+    @apply text-gray-700 leading-relaxed list-disc;
+  }
+  
+  .reiseversicherung-content br {
+    @apply block mb-2;
+  }
+}
