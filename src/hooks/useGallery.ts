@@ -405,8 +405,34 @@ export const useGallery = (filters?: GalleryFilter) => {
 
   const getImagesByReiseDatum = () => {
     const grouped = images.reduce((acc, image) => {
-      // Use the formatted reise_datum as key
-      const key = image.reise_datum || `${image.ort} ${image.monat} ${image.jahr}`;
+      // Create display format: "Ort Monat Jahr"
+      let displayFormat = '';
+      
+      if (image.reise_datum && image.reise_datum !== '' && !image.reise_datum.includes(' ')) {
+        // Extract from date field if it's a proper date
+        try {
+          const date = new Date(image.reise_datum);
+          if (!isNaN(date.getTime())) {
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                             'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear();
+            displayFormat = `${image.ort} ${month} ${year}`;
+          } else {
+            displayFormat = image.reise_datum;
+          }
+        } catch (e) {
+          displayFormat = image.reise_datum;
+        }
+      } else if (image.reise_datum && image.reise_datum.includes(' ')) {
+        // Already formatted
+        displayFormat = image.reise_datum;
+      } else {
+        // Fallback: construct from individual fields
+        displayFormat = `${image.ort} ${image.monat} ${image.jahr}`;
+      }
+      
+      const key = displayFormat;
       if (!acc[key]) {
         acc[key] = [];
       }
@@ -416,23 +442,32 @@ export const useGallery = (filters?: GalleryFilter) => {
     
     // Sort by year and month
     const sortedKeys = Object.keys(grouped).sort((a, b) => {
-      // Extract year from "Ort Monat Jahr" format
-      const yearA = parseInt(a.split(' ').pop() || '0');
-      const yearB = parseInt(b.split(' ').pop() || '0');
+      // Extract year from "Ort Monat Jahr" format or date
+      let yearA = 0, yearB = 0;
+      
+      // Try to extract year from end of string
+      const yearMatchA = a.match(/(\d{4})$/);
+      const yearMatchB = b.match(/(\d{4})$/);
+      
+      if (yearMatchA) yearA = parseInt(yearMatchA[1]);
+      if (yearMatchB) yearB = parseInt(yearMatchB[1]);
       
       if (yearA !== yearB) {
         return yearB - yearA; // Newest year first
       }
       
       // Extract month from "Ort Monat Jahr" format
-      const parts = a.split(' ');
-      const monthA = parts.length >= 2 ? parts[parts.length - 2] : '';
-      const partsB = b.split(' ');
-      const monthB = partsB.length >= 2 ? partsB[partsB.length - 2] : '';
-      
       const monthOrder = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                          'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-      return monthOrder.indexOf(monthB) - monthOrder.indexOf(monthA); // Newest month first
+      
+      let monthIndexA = -1, monthIndexB = -1;
+      
+      for (let i = 0; i < monthOrder.length; i++) {
+        if (a.includes(monthOrder[i])) monthIndexA = i;
+        if (b.includes(monthOrder[i])) monthIndexB = i;
+      }
+      
+      return monthIndexB - monthIndexA; // Newest month first
     });
     
     return sortedKeys.map(key => ({
