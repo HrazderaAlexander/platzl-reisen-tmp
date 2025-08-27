@@ -1,6 +1,6 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::galerie-konfiguration.galerie-konfiguration', ({ strapi }) => ({
+export default factories.createCoreService('api::galerie-konfiguration.galerie-konfiguration', ({ strapi }: any) => ({
   async find(params: any = {}) {
     const defaultParams = {
       ...params,
@@ -9,7 +9,7 @@ export default factories.createCoreService('api::galerie-konfiguration.galerie-k
     return await strapi.entityService.findMany('api::galerie-konfiguration.galerie-konfiguration', defaultParams);
   },
 
-  async findOne(entityId: number | string, params: any = {}) {
+  async findOne(entityId: any, params: any = {}) {
     const defaultParams = {
       ...params,
     };
@@ -37,7 +37,7 @@ export default factories.createCoreService('api::galerie-konfiguration.galerie-k
     });
   },
 
-  async update(entityId: number | string, params: any = {}) {
+  async update(entityId: any, params: any = {}) {
     const { data, ...otherParams } = params;
 
     return await strapi.entityService.update('api::galerie-konfiguration.galerie-konfiguration', entityId, {
@@ -46,7 +46,7 @@ export default factories.createCoreService('api::galerie-konfiguration.galerie-k
     });
   },
 
-  async delete(entityId: number | string, params: any = {}) {
+  async delete(entityId: any, params: any = {}) {
     return await strapi.entityService.delete('api::galerie-konfiguration.galerie-konfiguration', entityId, params);
   },
 
