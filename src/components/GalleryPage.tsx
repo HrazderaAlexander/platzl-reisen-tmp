@@ -255,9 +255,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <span>Aktive Filter:</span>
-                  {searchInput && (
+                  {filters.searchTerm && (
                     <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs">
-                      Suche: {searchInput}
+                      Suche: {filters.searchTerm}
                     </span>
                   )}
                   {filters.monat && (
@@ -353,18 +353,18 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-bold text-gray-600 mb-2">Keine Bilder gefunden</h3>
                     <p className="text-gray-500 text-sm mb-4">
-                      {hasVisibleFilters 
+                      {hasActiveFilters 
                         ? 'Keine Bilder entsprechen Ihren Filterkriterien. Versuchen Sie andere Filter oder entfernen Sie sie.'
                         : 'Noch keine Bilder in der Galerie verfügbar.'
                       }
                     </p>
-                    {hasVisibleFilters && (
+                    {hasActiveFilters && (
                       <button 
                         onClick={clearFilters}
                         className="bg-accent text-white px-4 py-2 rounded-lg font-semibold hover:bg-accent/90 transition-colors duration-300 text-sm"
                       >
-                      value={searchInput}
-                      onChange={(e) => handleSearchChange(e.target.value)}
+                        Filter zurücksetzen
+                      </button>
                     )}
                   </div>
                 </div>
