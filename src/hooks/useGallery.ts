@@ -405,7 +405,8 @@ export const useGallery = (filters?: GalleryFilter) => {
 
   const getImagesByReiseDatum = () => {
     const grouped = images.reduce((acc, image) => {
-      const key = image.reise_datum;
+      // Use the formatted reise_datum as key
+      const key = image.reise_datum || `${image.ort} ${image.monat} ${image.jahr}`;
       if (!acc[key]) {
         acc[key] = [];
       }
@@ -415,12 +416,19 @@ export const useGallery = (filters?: GalleryFilter) => {
     
     // Sort by year and month
     const sortedKeys = Object.keys(grouped).sort((a, b) => {
-      const [monthA, yearA] = a.split(' ');
-      const [monthB, yearB] = b.split(' ');
+      // Extract year from "Ort Monat Jahr" format
+      const yearA = parseInt(a.split(' ').pop() || '0');
+      const yearB = parseInt(b.split(' ').pop() || '0');
       
       if (yearA !== yearB) {
-        return parseInt(yearB) - parseInt(yearA); // Newest year first
+        return yearB - yearA; // Newest year first
       }
+      
+      // Extract month from "Ort Monat Jahr" format
+      const parts = a.split(' ');
+      const monthA = parts.length >= 2 ? parts[parts.length - 2] : '';
+      const partsB = b.split(' ');
+      const monthB = partsB.length >= 2 ? partsB[partsB.length - 2] : '';
       
       const monthOrder = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                          'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
