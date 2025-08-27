@@ -323,15 +323,13 @@ export const useGallery = (filters?: GalleryFilter) => {
             
             if (imageData.reise_datum) {
               const date = new Date(imageData.reise_datum);
-              const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
-                               'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-              monat = monthNames[date.getMonth()];
-              jahr = date.getFullYear();
+              if (!isNaN(date.getTime())) {
+                const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                                 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+                monat = monthNames[date.getMonth()];
+                jahr = date.getFullYear();
+              }
             }
-            
-            // Override with manual fields if provided
-            if (imageData.monat) monat = imageData.monat;
-            if (imageData.jahr) jahr = imageData.jahr;
             
             return {
               id: image.id.toString(),
