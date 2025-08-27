@@ -255,9 +255,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <span>Aktive Filter:</span>
-                  {filters.searchTerm && (
+                  {searchInput && (
                     <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs">
-                      Suche: {filters.searchTerm}
+                      Suche: {searchInput}
                     </span>
                   )}
                   {filters.monat && (
