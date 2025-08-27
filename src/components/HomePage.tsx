@@ -394,6 +394,61 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </section>
       )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
+          <div className="relative max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img
+              src={selectedImage.bild_url}
+              alt={selectedImage.titel}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            />
+            
+            {featuredImages.length > 1 && (
+              <>
+                <button
+                  onClick={prevGalleryImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                
+                <button
+                  onClick={nextGalleryImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+            
+            <button
+              onClick={closeImageModal}
+              className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 text-2xl"
+            >
+              ×
+            </button>
+            
+            <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white p-4 rounded-lg max-w-md">
+              <h3 className="font-bold mb-1">{selectedImage.titel}</h3>
+              {selectedImage.beschreibung && (
+                <p className="text-white/90 text-sm mb-2">{selectedImage.beschreibung}</p>
+              )}
+              <div className="flex items-center space-x-4 text-sm text-white/80">
+                <span className="flex items-center">
+                  <MapPin className="h-3 w-3 mr-1" />
+                  {selectedImage.ort}
+                </span>
+                <span className="flex items-center">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  {selectedImage.reise_datum}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
