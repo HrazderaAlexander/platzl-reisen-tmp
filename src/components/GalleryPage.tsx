@@ -353,12 +353,12 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-bold text-gray-600 mb-2">Keine Bilder gefunden</h3>
                     <p className="text-gray-500 text-sm mb-4">
-                      {hasActiveFilters 
+                      {hasVisibleFilters 
                         ? 'Keine Bilder entsprechen Ihren Filterkriterien. Versuchen Sie andere Filter oder entfernen Sie sie.'
                         : 'Noch keine Bilder in der Galerie verfügbar.'
                       }
                     </p>
-                    {hasActiveFilters && (
+                    {hasVisibleFilters && (
                       <button 
                         onClick={clearFilters}
                         className="bg-accent text-white px-4 py-2 rounded-lg font-semibold hover:bg-accent/90 transition-colors duration-300 text-sm"
