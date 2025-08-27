@@ -31,3 +31,4 @@ export interface GalleryFilter {
   jahr?: number;
   ort?: string;
   searchTerm?: string;
+}
