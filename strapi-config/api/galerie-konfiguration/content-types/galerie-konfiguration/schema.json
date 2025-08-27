@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "galerie_einstellungen",
+  "collectionName": "galerie_konfiguration",
   "info": {
-    "singularName": "galerie-einstellungen",
-    "pluralName": "galerie-einstellungen",
-    "displayName": "Galerie Einstellungen",
+    "singularName": "galerie-konfiguration",
+    "pluralName": "galerie-konfiguration",
+    "displayName": "Galerie Konfiguration",
     "description": "Konfiguration für die Galerie"
   },
   "options": {
