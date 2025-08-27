@@ -9,7 +9,7 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
+      sort: ['reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
     };
     
     const data = await strapi.entityService.findMany('api::galerie-bild.galerie-bild', populateQuery);
@@ -44,7 +44,7 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc', 'createdAt:desc']
+      sort: ['reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
     });
     
     return { data: activeBilder };
@@ -62,7 +62,7 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
     
     return { data: featuredBilder };
@@ -90,13 +90,15 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
     
     const bilder = await strapi.entityService.findMany('api::galerie-bild.galerie-bild', {
       filters: {
-        jahr: parseInt(year),
+        reise_datum: {
+          $contains: year.toString()
+        },
         aktiv: true
       },
       populate: {
         bild: true
       },
-      sort: ['monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
     
     return { data: bilder };
@@ -115,7 +117,7 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
     
     return { data: bilder };
@@ -137,7 +139,7 @@ export default factories.createCoreController('api::galerie-bild.galerie-bild', 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
     
     return { data: bilder };

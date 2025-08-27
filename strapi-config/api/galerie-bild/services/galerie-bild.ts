@@ -11,7 +11,7 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
+      sort: ['reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
     });
   },
 
@@ -26,7 +26,7 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
   },
 
@@ -46,32 +46,49 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
   },
 
   async findByYear(year: number, params: any = {}) {
+    // Extract year from reise_datum field
     return await strapi.entityService.findMany('api::galerie-bild.galerie-bild', {
       ...params,
       filters: {
-        jahr: year,
+        reise_datum: {
+          $contains: year.toString()
+        },
         aktiv: true,
         ...params.filters
       },
       populate: {
         bild: true
       },
-      sort: ['monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
   },
 
   async findByMonth(month: string, params: any = {}) {
+    // Convert German month name to month number for filtering
+    const monthMap: { [key: string]: string } = {
+      'Januar': '01', 'Februar': '02', 'März': '03', 'April': '04',
+      'Mai': '05', 'Juni': '06', 'Juli': '07', 'August': '08',
+      'September': '09', 'Oktober': '10', 'November': '11', 'Dezember': '12'
+    };
+    
+    const monthNumber = monthMap[month];
+    if (!monthNumber) {
+      return [];
+    }
+
     return await strapi.entityService.findMany('api::galerie-bild.galerie-bild', {
       ...params,
       filters: {
-        monat: month,
+        reise_datum: {
+          $contains: `-${monthNumber}-`
+        },
         aktiv: true,
         ...params.filters
       },
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
   },
 
@@ -88,7 +105,7 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
   },
 
@@ -108,7 +125,7 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'monat:desc', 'sortierung:asc']
+      sort: ['reise_datum:desc', 'sortierung:asc']
     });
   },
 
@@ -150,10 +167,18 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       filters: {
         aktiv: true
       },
-      fields: ['jahr']
+      fields: ['reise_datum']
     });
 
-    const years = [...new Set(bilder.map((bild: any) => bild.jahr))];
+    // Extract years from reise_datum field
+    const years = [...new Set(bilder.map((bild: any) => {
+      if (bild.reise_datum) {
+        const date = new Date(bild.reise_datum);
+        return !isNaN(date.getTime()) ? date.getFullYear() : null;
+      }
+      return null;
+    }).filter(year => year !== null))];
+    
     return years.sort((a: number, b: number) => b - a);
   },
 
@@ -162,10 +187,21 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       filters: {
         aktiv: true
       },
-      fields: ['monat']
+      fields: ['reise_datum']
     });
 
-    const months = [...new Set(bilder.map((bild: any) => bild.monat))];
+    // Extract months from reise_datum field
+    const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                       'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    
+    const months = [...new Set(bilder.map((bild: any) => {
+      if (bild.reise_datum) {
+        const date = new Date(bild.reise_datum);
+        return !isNaN(date.getTime()) ? monthNames[date.getMonth()] : null;
+      }
+      return null;
+    }).filter(month => month !== null))];
+    
     return months.sort();
   },
 
