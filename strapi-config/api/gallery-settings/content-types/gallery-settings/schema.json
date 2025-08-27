@@ -1,0 +1,49 @@
+{
+  "kind": "singleType",
+  "collectionName": "gallery_settings",
+  "info": {
+    "singularName": "gallery-settings",
+    "pluralName": "gallery-settings",
+    "displayName": "Gallery Settings",
+    "description": "Einstellungen für die Galerie"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titel": {
+      "type": "string",
+      "required": true,
+      "default": "UNSERE SCHÖNSTEN REISEFOTOS",
+      "maxLength": 255
+    },
+    "untertitel": {
+      "type": "text",
+      "required": true,
+      "default": "Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren!"
+    },
+    "intro_text": {
+      "type": "text",
+      "required": true,
+      "default": "Sie wollen Ihre schönsten Reisemomente auch mit uns teilen? Schicken Sie Ihre Bilder bitte mit Angabe des Orts und Zeitraums Ihrer Reise an"
+    },
+    "email_kontakt": {
+      "type": "string",
+      "required": true,
+      "default": "info@platzl-reisen.at",
+      "maxLength": 255
+    },
+    "hinweis_text": {
+      "type": "text",
+      "required": true,
+      "default": "Bitte beachten Sie, dass alle erkennbaren Personen mit der Veröffentlichung der Fotos einverstanden sein müssen!"
+    },
+    "archiv_titel": {
+      "type": "string",
+      "required": true,
+      "default": "Reisefotos Archiv",
+      "maxLength": 255
+    }
+  }
+}

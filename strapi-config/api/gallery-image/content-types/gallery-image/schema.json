@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gallery_images",
+  "info": {
+    "singularName": "gallery-image",
+    "pluralName": "gallery-images",
+    "displayName": "Gallery Image",
+    "description": "Bilder für die Galerie"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titel": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "beschreibung": {
+      "type": "text"
+    },
+    "bild": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "ort": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "monat": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "jahr": {
+      "type": "integer",
+      "required": true,
+      "min": 2000,
+      "max": 2100
+    },
+    "reise_datum": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "favorit": {
+      "type": "boolean",
+      "default": false
+    },
+    "tags": {
+      "type": "json"
+    },
+    "sortierung": {
+      "type": "integer",
+      "default": 0
+    },
+    "aktiv": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
