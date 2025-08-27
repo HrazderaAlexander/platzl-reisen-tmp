@@ -410,17 +410,15 @@ export const useGallery = (filters?: GalleryFilter) => {
     if (!filters) return images;
     
     return images.filter(image => {
-      // Filter by month - check both monat field and extracted from reise_datum
+      // Filter by month - only check extracted from reise_datum
       if (filters.monat) {
-        const monthMatches = image.monat === filters.monat || 
-          (image.reise_datum && extractMonthFromDate(image.reise_datum) === filters.monat);
+        const monthMatches = image.monat === filters.monat;
         if (!monthMatches) return false;
       }
       
-      // Filter by year - check both jahr field and extracted from reise_datum
+      // Filter by year - only check extracted from reise_datum
       if (filters.jahr) {
-        const yearMatches = image.jahr === filters.jahr || 
-          (image.reise_datum && extractYearFromDate(image.reise_datum) === filters.jahr);
+        const yearMatches = image.jahr === filters.jahr;
         if (!yearMatches) return false;
       }
       
@@ -444,22 +442,12 @@ export const useGallery = (filters?: GalleryFilter) => {
   };
 
   const getUniqueMonths = () => {
-    const months = [...new Set(images.map(img => {
-      // Use monat field if available, otherwise extract from reise_datum
-      if (img.monat) return img.monat;
-      if (img.reise_datum) return extractMonthFromDate(img.reise_datum);
-      return null;
-    }).filter(month => month !== null))];
+    const months = [...new Set(images.map(img => img.monat).filter(month => month && month !== 'Unbekannt'))];
     return months.sort();
   };
 
   const getUniqueYears = () => {
-    const years = [...new Set(images.map(img => {
-      // Use jahr field if available, otherwise extract from reise_datum
-      if (img.jahr) return img.jahr;
-      if (img.reise_datum) return extractYearFromDate(img.reise_datum);
-      return null;
-    }).filter(year => year !== null))];
+    const years = [...new Set(images.map(img => img.jahr).filter(year => year && year > 2000))];
     return years.sort((a, b) => b - a); // Newest first
   };
 
@@ -472,10 +460,9 @@ export const useGallery = (filters?: GalleryFilter) => {
     const grouped = images.reduce((acc, image) => {
       // Create display format: "Ort Monat Jahr"
       let displayFormat = '';
-      if (image.reise_datum) {
-        // Extract date information from reise_datum only
-        let monat = 'Unbekannt';
-        let jahr = new Date().getFullYear();
+          // Extract date information from reise_datum only
+          let monat = 'Unbekannt';
+          let jahr = new Date().getFullYear();
         try {
           const date = new Date(image.reise_datum);
           if (!isNaN(date.getTime())) {
@@ -490,7 +477,7 @@ export const useGallery = (filters?: GalleryFilter) => {
         } catch (e) {
           displayFormat = image.reise_datum;
         }
-      } else if (image.reise_datum && image.reise_datum.includes(' ')) {
+      if (image.reise_datum && image.reise_datum.includes(' ')) {
         // Already formatted
         displayFormat = image.reise_datum;
       } else {
