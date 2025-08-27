@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ArrowLeft, Camera, Filter, Search, MapPin, Calendar, Eye, X, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
 import { useGallery } from '../hooks/useGallery';
 import { GalleryFilter } from '../types/gallery';
@@ -9,13 +10,41 @@ interface GalleryPageProps {
 
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   const [filters, setFilters] = useState<GalleryFilter>({});
+  const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const { images, gallerySettings, loading, error, usingMockData, getImagesByReiseDatum, getUniqueMonths, getUniqueYears, getUniqueLocations } = useGallery(filters);
 
+  // Debounce function for search
+  const debounceSearch = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout;
+      return (searchTerm: string) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          setFilters(prev => ({
+            ...prev,
+            searchTerm: searchTerm || undefined
+          }));
+        }, 500); // 500ms delay
+      };
+    })(),
+    []
+  );
+
+  // Handle search input change
+  const handleSearchChange = (value: string) => {
+    setSearchInput(value);
+    debounceSearch(value);
+  };
+
   const handleFilterChange = (key: keyof GalleryFilter, value: any) => {
+    if (key === 'searchTerm') {
+      handleSearchChange(value);
+      return;
+    }
     setFilters(prev => ({
       ...prev,
       [key]: value || undefined
@@ -23,6 +52,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   };
 
   const clearFilters = () => {
+    setSearchInput('');
     setFilters({});
   };
 
@@ -225,9 +255,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <span>Aktive Filter:</span>
-                  {filters.searchTerm && (
+                  {searchInput && (
                     <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs">
-                      Suche: {filters.searchTerm}
+                      Suche: {searchInput}
                     </span>
                   )}
                   {filters.monat && (
@@ -333,8 +363,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                         onClick={clearFilters}
                         className="bg-accent text-white px-4 py-2 rounded-lg font-semibold hover:bg-accent/90 transition-colors duration-300 text-sm"
                       >
-                        Filter zurücksetzen
-                      </button>
+                      value={searchInput}
+                      onChange={(e) => handleSearchChange(e.target.value)}
                     )}
                   </div>
                 </div>
