@@ -31,25 +31,20 @@
       "required": true,
       "maxLength": 255
     },
-    "datum": {
-      "type": "date",
-      "required": true
-    },
     "monat": {
       "type": "string",
       "required": false,
       "maxLength": 50
     },
     "jahr": {
-      "type": "number",
+      "type": "integer",
       "required": false,
       "min": 2000,
       "max": 2100
     },
     "reise_datum": {
-      "type": "string",
-      "required": true,
-      "maxLength": 100
+      "type": "date",
+      "required": true
     },
     "favorit": {
       "type": "boolean",

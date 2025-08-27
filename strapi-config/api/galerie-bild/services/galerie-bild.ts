@@ -11,7 +11,7 @@ export default factories.createCoreService('api::galerie-bild.galerie-bild', ({ 
       populate: {
         bild: true
       },
-      sort: ['jahr:desc', 'datum:desc', 'sortierung:asc', 'createdAt:desc']
+      sort: ['jahr:desc', 'reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
     });
   },
 

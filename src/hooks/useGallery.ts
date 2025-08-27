@@ -293,24 +293,21 @@ export const useGallery = (filters?: GalleryFilter) => {
           const transformedImages: GalleryImage[] = imagesResponse.data.data.map((image: any) => {
             const imageData = image.attributes || image;
             
-            // Extract date information
+            // Extract date information from reise_datum
             let monat = '';
             let jahr = new Date().getFullYear();
-            let reiseDatum = '';
             
-            if (imageData.datum) {
-              const date = new Date(imageData.datum);
+            if (imageData.reise_datum) {
+              const date = new Date(imageData.reise_datum);
               const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
               monat = monthNames[date.getMonth()];
               jahr = date.getFullYear();
-              reiseDatum = `${monat} ${jahr}`;
             }
             
             // Override with manual fields if provided
             if (imageData.monat) monat = imageData.monat;
             if (imageData.jahr) jahr = imageData.jahr;
-            if (imageData.reise_datum) reiseDatum = imageData.reise_datum;
             
             return {
               id: image.id.toString(),
@@ -320,8 +317,7 @@ export const useGallery = (filters?: GalleryFilter) => {
               ort: imageData.ort || '',
               monat: monat,
               jahr: jahr,
-              reise_datum: reiseDatum || `${monat} ${jahr}`,
-              datum: imageData.datum || '',
+              reise_datum: imageData.reise_datum || '',
               favorit: imageData.favorit || false,
               tags: imageData.tags || [],
               sortierung: imageData.sortierung || 0,
