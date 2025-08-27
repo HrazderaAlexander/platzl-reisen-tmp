@@ -289,8 +289,6 @@ export const useGallery = (filters?: GalleryFilter) => {
           
           if (filterParams.$and) {
             filterParams.$and.push({ $or: searchFilter });
-            ];
-            delete filterParams.$or;
           } else {
             filterParams.$or = searchFilter;
           }
@@ -444,12 +442,22 @@ export const useGallery = (filters?: GalleryFilter) => {
   };
 
   const getUniqueMonths = () => {
-    const months = [...new Set(images.map(img => img.monat).filter(month => month && month !== 'Unbekannt'))];
+    const months = [...new Set(images.map(img => {
+      // Use monat field if available, otherwise extract from reise_datum
+      if (img.monat) return img.monat;
+      if (img.reise_datum) return extractMonthFromDate(img.reise_datum);
+      return null;
+    }).filter(month => month !== null))];
     return months.sort();
   };
 
   const getUniqueYears = () => {
-    const years = [...new Set(images.map(img => img.jahr).filter(year => year && year > 2000))];
+    const years = [...new Set(images.map(img => {
+      // Use jahr field if available, otherwise extract from reise_datum
+      if (img.jahr) return img.jahr;
+      if (img.reise_datum) return extractYearFromDate(img.reise_datum);
+      return null;
+    }).filter(year => year !== null))];
     return years.sort((a, b) => b - a); // Newest first
   };
 
@@ -462,12 +470,31 @@ export const useGallery = (filters?: GalleryFilter) => {
     const grouped = images.reduce((acc, image) => {
       // Create display format: "Ort Monat Jahr"
       let displayFormat = '';
-          // Extract date information from reise_datum only
-          let monat = 'Unbekannt';
-          let jahr = new Date().getFullYear();
+      if (image.reise_datum) {
+        // Extract date information from reise_datum only
+        let monat = 'Unbekannt';
+        let jahr = new Date().getFullYear();
         try {
-      // Create display format: "Ort Monat Jahr" from extracted data
-      const displayFormat = `${image.ort} ${image.monat} ${image.jahr}`;
+          const date = new Date(image.reise_datum);
+          if (!isNaN(date.getTime())) {
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                             'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            monat = monthNames[date.getMonth()];
+            jahr = date.getFullYear();
+            displayFormat = `${image.ort} ${monat} ${jahr}`;
+          } else {
+            displayFormat = image.reise_datum;
+          }
+        } catch (e) {
+          displayFormat = image.reise_datum;
+        }
+      } else if (image.reise_datum && image.reise_datum.includes(' ')) {
+        // Already formatted
+        displayFormat = image.reise_datum;
+      } else {
+        // Fallback: construct from individual fields
+        displayFormat = `${image.ort} ${image.monat} ${image.jahr}`;
+      }
       
       const key = displayFormat;
       if (!acc[key]) {
