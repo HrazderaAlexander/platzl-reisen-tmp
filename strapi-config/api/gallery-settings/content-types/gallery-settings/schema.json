@@ -1,9 +1,9 @@
 {
   "kind": "singleType",
-  "collectionName": "gallery_settings",
+  "collectionName": "gallery_setting",
   "info": {
-    "singularName": "gallery-settings",
-    "pluralName": "gallery-settings",
+    "singularName": "gallery-setting",
+    "pluralName": "gallery-setting",
     "displayName": "Gallery Settings",
     "description": "Einstellungen für die Galerie"
   },

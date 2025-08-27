@@ -2,8 +2,8 @@ export default {
   routes: [
     {
       method: 'GET',
-      path: '/gallery-settings',
-      handler: 'gallery-settings.find',
+      path: '/gallery-setting',
+      handler: 'gallery-setting.find',
       config: {
         policies: [],
         middlewares: [],
@@ -11,8 +11,8 @@ export default {
     },
     {
       method: 'POST',
-      path: '/gallery-settings',
-      handler: 'gallery-settings.create',
+      path: '/gallery-setting',
+      handler: 'gallery-setting.create',
       config: {
         policies: [],
         middlewares: [],
@@ -20,8 +20,8 @@ export default {
     },
     {
       method: 'PUT',
-      path: '/gallery-settings/:id',
-      handler: 'gallery-settings.update',
+      path: '/gallery-setting/:id',
+      handler: 'gallery-setting.update',
       config: {
         policies: [],
         middlewares: [],
@@ -29,8 +29,8 @@ export default {
     },
     {
       method: 'PUT',
-      path: '/gallery-settings',
-      handler: 'gallery-settings.update',
+      path: '/gallery-setting',
+      handler: 'gallery-setting.update',
       config: {
         policies: [],
         middlewares: [],
@@ -38,8 +38,8 @@ export default {
     },
     {
       method: 'DELETE',
-      path: '/gallery-settings/:id',
-      handler: 'gallery-settings.delete',
+      path: '/gallery-setting/:id',
+      handler: 'gallery-setting.delete',
       config: {
         policies: [],
         middlewares: [],

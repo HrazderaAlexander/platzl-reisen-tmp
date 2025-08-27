@@ -1,6 +1,6 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::gallery-settings.gallery-settings', ({ strapi }) => ({
+export default factories.createCoreService('api::gallery-setting.gallery-setting', ({ strapi }) => ({
   async find(params = {}) {
     const defaultParams = {
       populate: {
@@ -10,7 +10,7 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
       ...params,
     };
 
-    return await strapi.entityService.findMany('api::gallery-settings.gallery-settings', defaultParams);
+    return await strapi.entityService.findMany('api::gallery-setting.gallery-setting', defaultParams);
   },
 
   async findOne(entityId: number | string, params = {}) {
@@ -22,7 +22,7 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
       ...params,
     };
 
-    return await strapi.entityService.findOne('api::gallery-settings.gallery-settings', entityId, defaultParams);
+    return await strapi.entityService.findOne('api::gallery-setting.gallery-setting', entityId, defaultParams);
   },
 
   async create(params = {}) {
@@ -39,7 +39,7 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
       ...data,
     };
 
-    return await strapi.entityService.create('api::gallery-settings.gallery-settings', {
+    return await strapi.entityService.create('api::gallery-setting.gallery-setting', {
       data: entityData,
       populate: {
         team_foto: true,
@@ -51,7 +51,7 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
   async update(entityId: number | string, params = {}) {
     const { data, ...otherParams } = params;
 
-    return await strapi.entityService.update('api::gallery-settings.gallery-settings', entityId, {
+    return await strapi.entityService.update('api::gallery-setting.gallery-setting', entityId, {
       data,
       populate: {
         team_foto: true,
@@ -61,7 +61,7 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
   },
 
   async delete(entityId: number | string, params = {}) {
-    return await strapi.entityService.delete('api::gallery-settings.gallery-settings', entityId, params);
+    return await strapi.entityService.delete('api::gallery-setting.gallery-setting', entityId, params);
   },
 
   // Custom method to get or create settings (since it's a single type)
@@ -73,16 +73,6 @@ export default factories.createCoreService('api::gallery-settings.gallery-settin
     }
     
     // Create default settings if none exist
-    return await this.create({
-      data: {
-        titel: 'UNSERE SCHÖNSTEN REISEFOTOS',
-        untertitel: 'Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren!',
-        intro_text: 'Sie wollen Ihre schönsten Reisemomente auch mit uns teilen? Schicken Sie Ihre Bilder bitte mit Angabe des Orts und Zeitraums Ihrer Reise an',
-        email_kontakt: 'info@platzl-reisen.at',
-        hinweis_text: 'Bitte beachten Sie, dass alle erkennbaren Personen mit der Veröffentlichung der Fotos einverstanden sein müssen!',
-        archiv_titel: 'Reisefotos Archiv',
-      },
-      ...params,
-    });
+    return await this.create(params);
   },
 }));
