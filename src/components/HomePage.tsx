@@ -4,7 +4,7 @@ import { useHomepage } from '../hooks/useHomepage';
 import { useGallery } from '../hooks/useGallery';
 
 interface HomePageProps {
-  onNavigate: (page: 'therme' | 'sightseeing') => void;
+  onNavigate: (page: 'therme' | 'sightseeing' | 'galerie') => void;
 }
 
 const getIconComponent = (iconName: string) => {
@@ -99,6 +99,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     );
   }
 
+  function prevGalleryImage(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.stopPropagation();
+    if (featuredImages.length === 0 || selectedImage == null) return;
+    const currentIndex = featuredImages.findIndex(img => img.id === selectedImage.id);
+    const prevIndex = (currentIndex - 1 + featuredImages.length) % featuredImages.length;
+    setSelectedImage(featuredImages[prevIndex]);
+    setCurrentGalleryIndex(prevIndex);
+  }
+
+  function nextGalleryImage(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.stopPropagation();
+    if (featuredImages.length === 0 || selectedImage == null) return;
+    const currentIndex = featuredImages.findIndex(img => img.id === selectedImage.id);
+    const nextIndex = (currentIndex + 1) % featuredImages.length;
+    setSelectedImage(featuredImages[nextIndex]);
+    setCurrentGalleryIndex(nextIndex);
+  }
+
+  function closeImageModal(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.stopPropagation();
+    setSelectedImage(null);
+  }
   return (
     <div className="min-h-screen">
       {/* CMS Status Indicator */}
