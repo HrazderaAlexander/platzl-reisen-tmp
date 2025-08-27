@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { galleryService } from '../lib/api/galleryService.js';
+import { strapiApi } from '../lib/api/strapiClient';
 import { dataTransformers } from '../lib/api/dataTransformers';
-import { GalleryImage, GallerySettings, GalleryFilter } from '../types/gallery.js';
+import { GalleryImage, GallerySettings, GalleryFilter } from '../types/gallery';
 
 export const useGallery = (filters?: GalleryFilter) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
@@ -247,17 +247,50 @@ export const useGallery = (filters?: GalleryFilter) => {
         
         console.log('=== LOADING GALLERY DATA ===');
         
-        // Gallery Images und Settings laden
-        const imagesResponse = await galleryService.getGalleryImages(filters);
-        const settingsResponse = await galleryService.getGallerySettings();
+        // Build filter params
+        let filterParams: any = {
+          aktiv: true
+        };
+        
+        if (filters?.monat) {
+          filterParams.monat = { $eq: filters.monat };
+        }
+        if (filters?.jahr) {
+          filterParams.jahr = { $eq: filters.jahr };
+        }
+        if (filters?.ort) {
+          filterParams.ort = { $containsi: filters.ort };
+        }
+        if (filters?.searchTerm) {
+          filterParams.$or = [
+            { titel: { $containsi: filters.searchTerm } },
+            { beschreibung: { $containsi: filters.searchTerm } },
+            { ort: { $containsi: filters.searchTerm } },
+            { tags: { $containsi: filters.searchTerm } }
+          ];
+        }
+        
+        // Gallery Images laden
+        const imagesResponse = await strapiApi.get('/gallery-images', {
+          params: {
+            populate: {
+              bild: true
+            },
+            filters: filterParams,
+            sort: ['jahr:desc', 'monat:desc', 'sortierung:asc', 'created_at:desc']
+          }
+        });
+        
+        // Gallery Settings laden
+        const settingsResponse = await strapiApi.get('/gallery-settings');
         
         console.log('=== GALLERY API RESPONSES ===');
-        console.log('Images Response:', imagesResponse);
-        console.log('Settings Response:', settingsResponse);
+        console.log('Images Response:', imagesResponse.data);
+        console.log('Settings Response:', settingsResponse.data);
         
-        if (imagesResponse?.data && settingsResponse?.data) {
+        if (imagesResponse.data?.data && settingsResponse.data?.data) {
           // Transform images
-          const transformedImages: GalleryImage[] = imagesResponse.data.map((image: any) => {
+          const transformedImages: GalleryImage[] = imagesResponse.data.data.map((image: any) => {
             const imageData = image.attributes || image;
             return {
               id: image.id.toString(),
@@ -278,7 +311,7 @@ export const useGallery = (filters?: GalleryFilter) => {
           });
           
           // Transform settings
-          const settingsData = settingsResponse.data;
+          const settingsData = settingsResponse.data.data;
           const transformedSettings: GallerySettings = {
             titel: settingsData.titel || mockGallerySettings.titel,
             untertitel: settingsData.untertitel || mockGallerySettings.untertitel,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Camera, Filter, Search, MapPin, Calendar, Eye, X, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
 import { useGallery } from '../hooks/useGallery';
-import { GalleryFilter } from '../types/gallery.js';
+import { GalleryFilter } from '../types/gallery';
 
 interface GalleryPageProps {
   onBack: () => void;

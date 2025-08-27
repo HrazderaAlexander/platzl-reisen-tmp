@@ -1,5 +1,3 @@
-// Gallery Types for Platzl Reisen
-
 export interface GalleryImage {
   id: string;
   titel: string;
