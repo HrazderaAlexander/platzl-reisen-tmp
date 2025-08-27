@@ -1,11 +1,11 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreController('api::gallery-config.gallery-config', ({ strapi }) => ({
+export default factories.createCoreController('api::galerie-einstellungen.galerie-einstellungen', ({ strapi }) => ({
   async find(ctx) {
     // Gallery config is a single type, so we use findMany but expect only one result
     const { query } = await this.sanitizeQuery(ctx);
 
-    const entity = await strapi.entityService.findMany('api::gallery-config.gallery-config', {
+    const entity = await strapi.entityService.findMany('api::galerie-einstellungen.galerie-einstellungen', {
       ...query,
     });
 
@@ -18,17 +18,17 @@ export default factories.createCoreController('api::gallery-config.gallery-confi
     const { data } = ctx.request.body;
 
     // For single types, we need to find the existing entity first
-    const existingEntities = await strapi.entityService.findMany('api::gallery-config.gallery-config');
+    const existingEntities = await strapi.entityService.findMany('api::galerie-einstellungen.galerie-einstellungen');
     
     let entity;
     if (existingEntities && existingEntities.length > 0) {
       // Update existing entity
-      entity = await strapi.entityService.update('api::gallery-config.gallery-config', existingEntities[0].id, {
+      entity = await strapi.entityService.update('api::galerie-einstellungen.galerie-einstellungen', existingEntities[0].id, {
         data,
       });
     } else {
       // Create new entity if none exists
-      entity = await strapi.entityService.create('api::gallery-config.gallery-config', {
+      entity = await strapi.entityService.create('api::galerie-einstellungen.galerie-einstellungen', {
         data,
       });
     }
@@ -41,7 +41,7 @@ export default factories.createCoreController('api::gallery-config.gallery-confi
   async create(ctx) {
     const { data } = ctx.request.body;
 
-    const entity = await strapi.entityService.create('api::gallery-config.gallery-config', {
+    const entity = await strapi.entityService.create('api::galerie-einstellungen.galerie-einstellungen', {
       data,
     });
 
@@ -53,7 +53,7 @@ export default factories.createCoreController('api::gallery-config.gallery-confi
   async delete(ctx) {
     const { id } = ctx.params;
 
-    const entity = await strapi.entityService.delete('api::gallery-config.gallery-config', id);
+    const entity = await strapi.entityService.delete('api::galerie-einstellungen.galerie-einstellungen', id);
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
     return this.transformResponse(sanitizedEntity);

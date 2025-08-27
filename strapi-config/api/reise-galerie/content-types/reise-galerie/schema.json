@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "gallery_photos",
+  "collectionName": "reise_galerie",
   "info": {
-    "singularName": "gallery-photo",
-    "pluralName": "gallery-photos",
-    "displayName": "Gallery Photo",
-    "description": "Bilder für die Galerie"
+    "singularName": "reise-galerie",
+    "pluralName": "reise-galeries",
+    "displayName": "Reise Galerie",
+    "description": "Bilder für die Reise-Galerie"
   },
   "options": {
     "draftAndPublish": true

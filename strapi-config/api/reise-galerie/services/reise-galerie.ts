@@ -1,6 +1,6 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::gallery-photo.gallery-photo', ({ strapi }) => ({
+export default factories.createCoreService('api::reise-galerie.reise-galerie', ({ strapi }) => ({
   async find(params = {}) {
     // Add default sorting and filtering
     const defaultParams = {
@@ -16,7 +16,7 @@ export default factories.createCoreService('api::gallery-photo.gallery-photo', (
       ...params,
     };
 
-    return await strapi.entityService.findMany('api::gallery-photo.gallery-photo', defaultParams);
+    return await strapi.entityService.findMany('api::reise-galerie.reise-galerie', defaultParams);
   },
 
   async findOne(entityId: number | string, params = {}) {
@@ -28,7 +28,7 @@ export default factories.createCoreService('api::gallery-photo.gallery-photo', (
       ...params,
     };
 
-    return await strapi.entityService.findOne('api::gallery-photo.gallery-photo', entityId, defaultParams);
+    return await strapi.entityService.findOne('api::reise-galerie.reise-galerie', entityId, defaultParams);
   },
 
   async create(params = {}) {
@@ -42,7 +42,7 @@ export default factories.createCoreService('api::gallery-photo.gallery-photo', (
       ...data,
     };
 
-    return await strapi.entityService.create('api::gallery-photo.gallery-photo', {
+    return await strapi.entityService.create('api::reise-galerie.reise-galerie', {
       data: entityData,
       populate: {
         bild: true,
@@ -54,7 +54,7 @@ export default factories.createCoreService('api::gallery-photo.gallery-photo', (
   async update(entityId: number | string, params = {}) {
     const { data, ...otherParams } = params;
 
-    return await strapi.entityService.update('api::gallery-photo.gallery-photo', entityId, {
+    return await strapi.entityService.update('api::reise-galerie.reise-galerie', entityId, {
       data,
       populate: {
         bild: true,
@@ -64,7 +64,7 @@ export default factories.createCoreService('api::gallery-photo.gallery-photo', (
   },
 
   async delete(entityId: number | string, params = {}) {
-    return await strapi.entityService.delete('api::gallery-photo.gallery-photo', entityId, params);
+    return await strapi.entityService.delete('api::reise-galerie.reise-galerie', entityId, params);
   },
 
   // Custom methods

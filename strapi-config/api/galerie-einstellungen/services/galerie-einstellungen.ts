@@ -1,12 +1,12 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::gallery-config.gallery-config', ({ strapi }) => ({
+export default factories.createCoreService('api::galerie-einstellungen.galerie-einstellungen', ({ strapi }) => ({
   async find(params = {}) {
     const defaultParams = {
       ...params,
     };
 
-    return await strapi.entityService.findMany('api::gallery-config.gallery-config', defaultParams);
+    return await strapi.entityService.findMany('api::galerie-einstellungen.galerie-einstellungen', defaultParams);
   },
 
   async findOne(entityId: number | string, params = {}) {
@@ -14,7 +14,7 @@ export default factories.createCoreService('api::gallery-config.gallery-config',
       ...params,
     };
 
-    return await strapi.entityService.findOne('api::gallery-config.gallery-config', entityId, defaultParams);
+    return await strapi.entityService.findOne('api::galerie-einstellungen.galerie-einstellungen', entityId, defaultParams);
   },
 
   async create(params = {}) {
@@ -31,7 +31,7 @@ export default factories.createCoreService('api::gallery-config.gallery-config',
       ...data,
     };
 
-    return await strapi.entityService.create('api::gallery-config.gallery-config', {
+    return await strapi.entityService.create('api::galerie-einstellungen.galerie-einstellungen', {
       data: entityData,
       ...otherParams,
     });
@@ -40,18 +40,18 @@ export default factories.createCoreService('api::gallery-config.gallery-config',
   async update(entityId: number | string, params = {}) {
     const { data, ...otherParams } = params;
 
-    return await strapi.entityService.update('api::gallery-config.gallery-config', entityId, {
+    return await strapi.entityService.update('api::galerie-einstellungen.galerie-einstellungen', entityId, {
       data,
       ...otherParams,
     });
   },
 
   async delete(entityId: number | string, params = {}) {
-    return await strapi.entityService.delete('api::gallery-config.gallery-config', entityId, params);
+    return await strapi.entityService.delete('api::galerie-einstellungen.galerie-einstellungen', entityId, params);
   },
 
   // Custom method to get or create config (since it's a single type)
-  async getConfig(params = {}) {
+  async getSettings(params = {}) {
     const config = await this.find(params);
     
     if (config && config.length > 0) {

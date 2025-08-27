@@ -1,6 +1,6 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreController('api::gallery-photo.gallery-photo', ({ strapi }) => ({
+export default factories.createCoreController('api::reise-galerie.reise-galerie', ({ strapi }) => ({
   async find(ctx) {
     // Sanitize query
     const { query } = await this.sanitizeQuery(ctx);
@@ -15,7 +15,7 @@ export default factories.createCoreController('api::gallery-photo.gallery-photo'
     };
 
     // Fetch entities
-    const { data, meta } = await strapi.entityService.findMany('api::gallery-photo.gallery-photo', populatedQuery);
+    const { data, meta } = await strapi.entityService.findMany('api::reise-galerie.reise-galerie', populatedQuery);
 
     // Sanitize output
     const sanitizedResults = await this.sanitizeOutput(data, ctx);
@@ -36,7 +36,7 @@ export default factories.createCoreController('api::gallery-photo.gallery-photo'
       },
     };
 
-    const entity = await strapi.entityService.findOne('api::gallery-photo.gallery-photo', id, populatedQuery);
+    const entity = await strapi.entityService.findOne('api::reise-galerie.reise-galerie', id, populatedQuery);
 
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
@@ -46,7 +46,7 @@ export default factories.createCoreController('api::gallery-photo.gallery-photo'
   async create(ctx) {
     const { data } = ctx.request.body;
 
-    const entity = await strapi.entityService.create('api::gallery-photo.gallery-photo', {
+    const entity = await strapi.entityService.create('api::reise-galerie.reise-galerie', {
       data,
       populate: {
         bild: true,
@@ -62,7 +62,7 @@ export default factories.createCoreController('api::gallery-photo.gallery-photo'
     const { id } = ctx.params;
     const { data } = ctx.request.body;
 
-    const entity = await strapi.entityService.update('api::gallery-photo.gallery-photo', id, {
+    const entity = await strapi.entityService.update('api::reise-galerie.reise-galerie', id, {
       data,
       populate: {
         bild: true,
@@ -77,7 +77,7 @@ export default factories.createCoreController('api::gallery-photo.gallery-photo'
   async delete(ctx) {
     const { id } = ctx.params;
 
-    const entity = await strapi.entityService.delete('api::gallery-photo.gallery-photo', id);
+    const entity = await strapi.entityService.delete('api::reise-galerie.reise-galerie', id);
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
     return this.transformResponse(sanitizedEntity);

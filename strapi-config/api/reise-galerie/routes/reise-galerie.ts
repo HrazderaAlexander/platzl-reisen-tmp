@@ -2,8 +2,17 @@ export default {
   routes: [
     {
       method: 'GET',
-      path: '/gallery-config',
-      handler: 'gallery-config.find',
+      path: '/reise-galeries',
+      handler: 'reise-galerie.find',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
+      path: '/reise-galeries/:id',
+      handler: 'reise-galerie.findOne',
       config: {
         policies: [],
         middlewares: [],
@@ -11,8 +20,8 @@ export default {
     },
     {
       method: 'POST',
-      path: '/gallery-config',
-      handler: 'gallery-config.create',
+      path: '/reise-galeries',
+      handler: 'reise-galerie.create',
       config: {
         policies: [],
         middlewares: [],
@@ -20,17 +29,8 @@ export default {
     },
     {
       method: 'PUT',
-      path: '/gallery-config/:id',
-      handler: 'gallery-config.update',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
-      method: 'PUT',
-      path: '/gallery-config',
-      handler: 'gallery-config.update',
+      path: '/reise-galeries/:id',
+      handler: 'reise-galerie.update',
       config: {
         policies: [],
         middlewares: [],
@@ -38,8 +38,8 @@ export default {
     },
     {
       method: 'DELETE',
-      path: '/gallery-config/:id',
-      handler: 'gallery-config.delete',
+      path: '/reise-galeries/:id',
+      handler: 'reise-galerie.delete',
       config: {
         policies: [],
         middlewares: [],
