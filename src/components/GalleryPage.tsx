@@ -170,8 +170,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                   </label>
                   <select
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm"
-                    value={filters.month || ''}
-                    onChange={(e) => handleFilterChange('month', e.target.value)}
+                    value={filters.monat || ''}
+                    onChange={(e) => handleFilterChange('monat', e.target.value)}
                   >
                     <option value="">Alle Monate</option>
                     {getUniqueMonths().map(month => (
@@ -185,8 +185,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                   </label>
                   <select
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm"
-                    value={filters.year || ''}
-                    onChange={(e) => handleFilterChange('year', e.target.value ? parseInt(e.target.value) : undefined)}
+                    value={filters.jahr || ''}
+                    onChange={(e) => handleFilterChange('jahr', e.target.value ? parseInt(e.target.value) : undefined)}
                   >
                     <option value="">Alle Jahre</option>
                     {getUniqueYears().map(year => (
@@ -228,6 +228,16 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                   {filters.searchTerm && (
                     <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs">
                       Suche: {filters.searchTerm}
+                    </span>
+                  )}
+                  {filters.monat && (
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                      {filters.monat}
+                    </span>
+                  )}
+                  {filters.jahr && (
+                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                      {filters.jahr}
                     </span>
                   )}
                   {filters.ort && (
