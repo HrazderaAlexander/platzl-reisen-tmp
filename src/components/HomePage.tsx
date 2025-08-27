@@ -373,6 +373,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               {featuredImages.slice(0, 8).map((image, index) => (
                 <div
                   key={image.id}
+                  onClick={() => {
+                    setSelectedImage(image);
+                    setCurrentGalleryIndex(index);
+                  }}
                   className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -380,13 +384,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     <img
                       src={image.bild_url}
                       alt={image.titel}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
                     {/* Favorit Badge */}
                     <div className="absolute top-2 right-2 bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">
                       ⭐
+                    </div>
+                    
+                    {/* View Icon */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg">
+                        <Eye className="h-4 w-4" />
+                      </div>
                     </div>
                     
                     {/* Info Overlay */}
