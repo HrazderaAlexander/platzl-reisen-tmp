@@ -17,10 +17,12 @@ import { ImpressumPage } from './components/ImpressumPage';
 import { AboutUsPage } from './components/AboutUsPage';
 import { GutscheinePage } from './components/GutscheinePage';
 import { ReiseversicherungPage } from './components/ReiseversicherungPage';
+import { DatenschutzPage } from './components/DatenschutzPage';
+import { GalleryPage } from './components/GalleryPage';
 import { useTrip } from './hooks/useTrips';
 import { Trip } from './types';
 
-type Page = 'home' | 'therme' | 'sightseeing' | 'trip' | 'agb' | 'download' | 'contact' | 'sonstiges' | 'umweltbeitrag' | 'reisebedingungen' | 'team' | 'flotte' | 'newsletter' | 'impressum' | 'about-us' | 'gutscheine' | 'reiseversicherung';
+type Page = 'home' | 'therme' | 'sightseeing' | 'trip' | 'agb' | 'download' | 'contact' | 'sonstiges' | 'umweltbeitrag' | 'reisebedingungen' | 'team' | 'flotte' | 'newsletter' | 'impressum' | 'about-us' | 'gutscheine' | 'reiseversicherung' | 'datenschutz' | 'galerie';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -101,6 +103,14 @@ function App() {
         setCurrentPage('reiseversicherung');
         setCurrentCategory(null);
         setSelectedTripId(null);
+      } else if (page === 'datenschutz') {
+        setCurrentPage('datenschutz');
+        setCurrentCategory(null);
+        setSelectedTripId(null);
+      } else if (page === 'galerie') {
+        setCurrentPage('galerie');
+        setCurrentCategory(null);
+        setSelectedTripId(null);
       } else {
         setCurrentPage('home');
         setCurrentCategory(null);
@@ -155,6 +165,10 @@ function App() {
       window.location.hash = '#gutscheine';
     } else if (page === 'reiseversicherung') {
       window.location.hash = '#reiseversicherung';
+    } else if (page === 'datenschutz') {
+      window.location.hash = '#datenschutz';
+    } else if (page === 'galerie') {
+      window.location.hash = '#galerie';
     } else if (page === 'home') {
       window.location.hash = '';
     }
@@ -272,6 +286,14 @@ function App() {
       
       {currentPage === 'reiseversicherung' && (
         <ReiseversicherungPage onBack={() => handleNavigate('sonstiges')} />
+      )}
+      
+      {currentPage === 'datenschutz' && (
+        <DatenschutzPage onBack={() => handleNavigate('sonstiges')} />
+      )}
+      
+      {currentPage === 'galerie' && (
+        <GalleryPage onBack={() => handleNavigate('home')} />
       )}
       
       <Footer onNavigate={handleNavigate} />

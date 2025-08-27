@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users, Star, ChevronLeft, ChevronRight, Award, Heart, ThumbsUp, Shield, Play, Pause, Phone, Mail, ArrowRight } from 'lucide-react';
 import { useHomepage } from '../hooks/useHomepage';
+import { useGallery } from '../hooks/useGallery';
 
 interface HomePageProps {
   onNavigate: (page: 'therme' | 'sightseeing') => void;
@@ -28,6 +29,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   // Dann alle anderen Hooks
   const { homepageData, loading, error, usingMockData } = useHomepage();
+  const { getFeaturedImages } = useGallery();
+  const featuredImages = getFeaturedImages();
 
   // Dann alle useEffect Hooks
   useEffect(() => {
@@ -327,6 +330,68 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </div>
       </section>
+
+      {/* Featured Gallery Section */}
+      {featuredImages.length > 0 && (
+        <section className="py-20 bg-gradient-to-b from-white to-primary/20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+                Unsere schönsten Reisefotos
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
+              <p className="text-gray-600 text-sm max-w-2xl mx-auto">
+                Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {featuredImages.slice(0, 8).map((image, index) => (
+                <div
+                  key={image.id}
+                  className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={image.bild_url}
+                      alt={image.titel}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Favorit Badge */}
+                    <div className="absolute top-2 right-2 bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">
+                      ⭐
+                    </div>
+                    
+                    {/* Info Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="font-semibold text-sm mb-1">{image.titel}</h3>
+                      <div className="flex items-center text-xs">
+                        <MapPin className="h-3 w-3 mr-1" />
+                        <span>{image.ort}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <button 
+                onClick={() => onNavigate('galerie')}
+                className="group bg-gradient-to-r from-accent to-accent/80 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-accent/90 hover:to-accent/70 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105"
+              >
+                <span className="flex items-center justify-center">
+                  Alle Fotos ansehen
+                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

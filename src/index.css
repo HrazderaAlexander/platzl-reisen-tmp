@@ -180,4 +180,78 @@
   .reiseversicherung-content br {
     @apply block mb-2;
   }
+
+  /* Datenschutz Content Styling */
+  .datenschutz-content {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .datenschutz-content h1 {
+    @apply text-2xl font-bold text-gray-800 mb-4 mt-6 border-b border-gray-200 pb-2;
+  }
+  
+  .datenschutz-content h2 {
+    @apply text-xl font-bold text-gray-800 mb-3 mt-5;
+  }
+  
+  .datenschutz-content h3 {
+    @apply text-lg font-semibold text-gray-800 mb-2 mt-4;
+  }
+  
+  .datenschutz-content h4 {
+    @apply text-base font-bold text-gray-800 mb-2 mt-3;
+  }
+  
+  .datenschutz-content p {
+    @apply text-gray-700 leading-relaxed mb-4 text-base;
+  }
+  
+  .datenschutz-content strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .datenschutz-content em {
+    @apply italic;
+  }
+  
+  .datenschutz-content a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .datenschutz-content blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4;
+  }
+  
+  .datenschutz-content code {
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .datenschutz-content pre {
+    @apply bg-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+  }
+  
+  .datenschutz-content pre code {
+    @apply bg-transparent p-0;
+  }
+  
+  .datenschutz-content ul,
+  .datenschutz-content ol {
+    @apply mb-4 pl-6 space-y-2;
+  }
+  
+  .datenschutz-content li {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .datenschutz-content ul li {
+    @apply list-disc;
+  }
+  
+  .datenschutz-content ol li {
+    @apply list-decimal;
+  }
+  
+  .datenschutz-content br {
+    @apply block mb-2;
+  }
 }

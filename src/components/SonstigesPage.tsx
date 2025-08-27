@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Info, Leaf, Mail, Download, Shield, Users, Phone, Award, Gift, FileText, Building } from 'lucide-react';
+import { ArrowLeft, Info, Leaf, Mail, Download, Shield, Users, Phone, Award, Gift, FileText, Building, Lock } from 'lucide-react';
 import { UmweltbeitragPage } from './UmweltbeitragPage';
 
 interface SonstigesPageProps {
@@ -107,6 +107,14 @@ export const SonstigesPage: React.FC<SonstigesPageProps> = ({ onBack, onNavigate
       description: 'Verschenken Sie unvergessliche Reiseerlebnisse',
       icon: Gift,
       color: 'from-pink-500 to-pink-600',
+      isPage: true
+    },
+    {
+      id: 'datenschutz',
+      title: 'Datenschutz',
+      description: 'Informationen zum Schutz Ihrer persönlichen Daten',
+      icon: Lock,
+      color: 'from-gray-700 to-gray-800',
       isPage: true
     }
   ];

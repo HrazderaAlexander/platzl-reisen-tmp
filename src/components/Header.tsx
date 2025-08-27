@@ -75,6 +75,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
               📋 Sonstiges
             </button>
             
+            <button
+              onClick={() => onNavigate('galerie')}
+              className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+                currentPage === 'galerie' 
+                  ? 'bg-purple-600 text-white shadow-xl' 
+                  : 'text-gray-700 hover:bg-white/50 hover:text-purple-600 hover:shadow-lg'
+              }`}
+            >
+              📸 Galerie
+            </button>
+            
             {/* Thermenreisen Dropdown */}
             <div 
               className="relative"
@@ -331,6 +342,16 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
             }`}
           >
             📋 Sonstiges
+          </button>
+          <button
+            onClick={() => onNavigate('galerie')}
+            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
+              currentPage === 'galerie' 
+                ? 'bg-purple-600 text-white shadow-lg' 
+                : 'text-gray-700 hover:bg-white/50 hover:text-purple-600'
+            }`}
+          >
+            📸 Galerie
           </button>
         </nav>
       </div>
