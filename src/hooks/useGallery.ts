@@ -271,7 +271,7 @@ export const useGallery = (filters?: GalleryFilter) => {
         }
         
         // Gallery Images laden
-        const imagesResponse = await strapiApi.get('/gallery-images', {
+        const imagesResponse = await strapiApi.get('/gallery-photos', {
           params: {
             populate: {
               bild: true
@@ -282,7 +282,7 @@ export const useGallery = (filters?: GalleryFilter) => {
         });
         
         // Gallery Settings laden
-        const settingsResponse = await strapiApi.get('/gallery-settings');
+        const settingsResponse = await strapiApi.get('/gallery-config');
         
         console.log('=== GALLERY API RESPONSES ===');
         console.log('Images Response:', imagesResponse.data);

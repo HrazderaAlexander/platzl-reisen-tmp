@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "gallery_images",
+  "collectionName": "gallery_photos",
   "info": {
-    "singularName": "gallery-image",
-    "pluralName": "gallery-images",
-    "displayName": "Gallery Image",
+    "singularName": "gallery-photo",
+    "pluralName": "gallery-photos",
+    "displayName": "Gallery Photo",
     "description": "Bilder für die Galerie"
   },
   "options": {

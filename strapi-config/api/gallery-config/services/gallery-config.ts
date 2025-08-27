@@ -1,34 +1,26 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::gallery-setting.gallery-setting', ({ strapi }) => ({
+export default factories.createCoreService('api::gallery-config.gallery-config', ({ strapi }) => ({
   async find(params = {}) {
     const defaultParams = {
-      populate: {
-        team_foto: true,
-        ...params.populate,
-      },
       ...params,
     };
 
-    return await strapi.entityService.findMany('api::gallery-setting.gallery-setting', defaultParams);
+    return await strapi.entityService.findMany('api::gallery-config.gallery-config', defaultParams);
   },
 
   async findOne(entityId: number | string, params = {}) {
     const defaultParams = {
-      populate: {
-        team_foto: true,
-        ...params.populate,
-      },
       ...params,
     };
 
-    return await strapi.entityService.findOne('api::gallery-setting.gallery-setting', entityId, defaultParams);
+    return await strapi.entityService.findOne('api::gallery-config.gallery-config', entityId, defaultParams);
   },
 
   async create(params = {}) {
     const { data, ...otherParams } = params;
 
-    // Set default values for gallery settings
+    // Set default values for gallery config
     const entityData = {
       titel: 'UNSERE SCHÖNSTEN REISEFOTOS',
       untertitel: 'Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren!',
@@ -39,11 +31,8 @@ export default factories.createCoreService('api::gallery-setting.gallery-setting
       ...data,
     };
 
-    return await strapi.entityService.create('api::gallery-setting.gallery-setting', {
+    return await strapi.entityService.create('api::gallery-config.gallery-config', {
       data: entityData,
-      populate: {
-        team_foto: true,
-      },
       ...otherParams,
     });
   },
@@ -51,28 +40,25 @@ export default factories.createCoreService('api::gallery-setting.gallery-setting
   async update(entityId: number | string, params = {}) {
     const { data, ...otherParams } = params;
 
-    return await strapi.entityService.update('api::gallery-setting.gallery-setting', entityId, {
+    return await strapi.entityService.update('api::gallery-config.gallery-config', entityId, {
       data,
-      populate: {
-        team_foto: true,
-      },
       ...otherParams,
     });
   },
 
   async delete(entityId: number | string, params = {}) {
-    return await strapi.entityService.delete('api::gallery-setting.gallery-setting', entityId, params);
+    return await strapi.entityService.delete('api::gallery-config.gallery-config', entityId, params);
   },
 
-  // Custom method to get or create settings (since it's a single type)
-  async getSettings(params = {}) {
-    const settings = await this.find(params);
+  // Custom method to get or create config (since it's a single type)
+  async getConfig(params = {}) {
+    const config = await this.find(params);
     
-    if (settings && settings.length > 0) {
-      return settings[0];
+    if (config && config.length > 0) {
+      return config[0];
     }
     
-    // Create default settings if none exist
+    // Create default config if none exist
     return await this.create(params);
   },
 }));

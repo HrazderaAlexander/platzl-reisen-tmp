@@ -1,11 +1,11 @@
 {
   "kind": "singleType",
-  "collectionName": "gallery_setting",
+  "collectionName": "gallery_config",
   "info": {
-    "singularName": "gallery-setting",
-    "pluralName": "gallery-setting",
-    "displayName": "Gallery Settings",
-    "description": "Einstellungen für die Galerie"
+    "singularName": "gallery-config",
+    "pluralName": "gallery-config",
+    "displayName": "Gallery Config",
+    "description": "Konfiguration für die Galerie"
   },
   "options": {
     "draftAndPublish": false
