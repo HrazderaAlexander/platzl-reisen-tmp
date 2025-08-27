@@ -1,3 +1,5 @@
+// Gallery Types for Platzl Reisen
+
 export interface GalleryImage {
   id: string;
   titel: string;
@@ -29,4 +31,3 @@ export interface GalleryFilter {
   jahr?: number;
   ort?: string;
   searchTerm?: string;
-}

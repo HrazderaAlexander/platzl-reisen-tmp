@@ -124,3 +124,6 @@ export interface Reiseleiter {
 
 // Main Trip type (same as StrapiTrip for compatibility)
 export type Trip = StrapiTrip;
+
+// Re-export gallery types
+export type { GalleryImage, GallerySettings, GalleryFilter } from './gallery.js';
