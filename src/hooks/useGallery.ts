@@ -277,12 +277,12 @@ export const useGallery = (filters?: GalleryFilter) => {
               bild: true
             },
             filters: filterParams,
-            sort: ['jahr:desc', 'monat:desc', 'sortierung:asc', 'created_at:desc']
+            sort: ['jahr:desc', 'datum:desc', 'sortierung:asc', 'createdAt:desc']
           }
         });
         
         // Gallery Settings laden
-        const settingsResponse = await strapiApi.get('/galerie-konfiguration');
+        const settingsResponse = await strapiApi.get('/galerie-konfiguration/get-or-create');
         
         console.log('=== GALLERY API RESPONSES ===');
         console.log('Images Response:', imagesResponse.data);
@@ -292,15 +292,36 @@ export const useGallery = (filters?: GalleryFilter) => {
           // Transform images
           const transformedImages: GalleryImage[] = imagesResponse.data.data.map((image: any) => {
             const imageData = image.attributes || image;
+            
+            // Extract date information
+            let monat = '';
+            let jahr = new Date().getFullYear();
+            let reiseDatum = '';
+            
+            if (imageData.datum) {
+              const date = new Date(imageData.datum);
+              const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+                               'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+              monat = monthNames[date.getMonth()];
+              jahr = date.getFullYear();
+              reiseDatum = `${monat} ${jahr}`;
+            }
+            
+            // Override with manual fields if provided
+            if (imageData.monat) monat = imageData.monat;
+            if (imageData.jahr) jahr = imageData.jahr;
+            if (imageData.reise_datum) reiseDatum = imageData.reise_datum;
+            
             return {
               id: image.id.toString(),
               titel: imageData.titel || '',
               beschreibung: imageData.beschreibung || '',
               bild_url: dataTransformers.getMediaUrl(imageData.bild),
               ort: imageData.ort || '',
-              monat: imageData.monat || '',
-              jahr: imageData.jahr || new Date().getFullYear(),
-              reise_datum: imageData.reise_datum || `${imageData.monat} ${imageData.jahr}`,
+              monat: monat,
+              jahr: jahr,
+              reise_datum: reiseDatum || `${monat} ${jahr}`,
+              datum: imageData.datum || '',
               favorit: imageData.favorit || false,
               tags: imageData.tags || [],
               sortierung: imageData.sortierung || 0,
@@ -311,7 +332,7 @@ export const useGallery = (filters?: GalleryFilter) => {
           });
           
           // Transform settings
-          const settingsData = settingsResponse.data.data;
+          const settingsData = settingsResponse.data.data || settingsResponse.data;
           const transformedSettings: GallerySettings = {
             titel: settingsData.titel || mockGallerySettings.titel,
             untertitel: settingsData.untertitel || mockGallerySettings.untertitel,

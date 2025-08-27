@@ -5,8 +5,9 @@ export interface GalleryImage {
   bild_url: string;
   ort: string;
   monat: string;
-  jahr: number;
+  jahr: number; // Bleibt number, wird aus Strapi number field gelesen
   reise_datum: string; // z.B. "November 2021"
+  datum: string; // ISO date string from Strapi date field
   favorit: boolean;
   tags: string[];
   sortierung: number;
