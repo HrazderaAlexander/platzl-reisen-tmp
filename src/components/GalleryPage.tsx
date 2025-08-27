@@ -99,6 +99,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
 
   const groupedImages = getImagesByReiseDatum();
   const hasActiveFilters = Object.values(filters).some(value => value !== undefined && value !== '');
+  const hasVisibleFilters = searchInput || filters.monat || filters.jahr || filters.ort;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/30 via-white to-primary/20">
@@ -251,7 +252,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               </div>
             )}
             
-            {hasActiveFilters && (
+            {hasVisibleFilters && (
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <span>Aktive Filter:</span>
