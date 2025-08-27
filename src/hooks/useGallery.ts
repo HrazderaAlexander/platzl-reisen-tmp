@@ -301,7 +301,7 @@ export const useGallery = (filters?: GalleryFilter) => {
               bild: true
             },
             filters: filterParams,
-            sort: ['jahr:desc', 'datum:desc', 'sortierung:asc', 'createdAt:desc']
+            sort: ['reise_datum:desc', 'sortierung:asc', 'createdAt:desc']
           }
         });
         
