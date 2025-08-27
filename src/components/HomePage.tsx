@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, Users, Star, ChevronLeft, ChevronRight, Award, Heart, ThumbsUp, Shield, Play, Pause, Phone, Mail, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, Users, Star, ChevronLeft, ChevronRight, Award, Heart, ThumbsUp, Shield, Play, Pause, Phone, Mail, ArrowRight, Eye, X } from 'lucide-react';
 import { useHomepage } from '../hooks/useHomepage';
 import { useGallery } from '../hooks/useGallery';
 
@@ -26,6 +26,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
 
   // Dann alle anderen Hooks
   const { homepageData, loading, error, usingMockData } = useHomepage();
