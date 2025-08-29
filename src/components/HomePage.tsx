@@ -243,14 +243,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-8 z-10">
-          <div className="group cursor-pointer">
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center backdrop-blur-sm group-hover:border-white/70 transition-all duration-300 animate-bounce">
-              <div className="w-1 h-3 bg-white/75 rounded-full mt-2 animate-pulse group-hover:bg-white/90 transition-colors duration-300"></div>
-            </div>
-            <div className="text-white/60 text-xs mt-2 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Scroll
-            </div>
+        <div className="absolute bottom-8 left-8 animate-bounce z-10">
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center backdrop-blur-sm">
+            <div className="w-1 h-3 bg-white/75 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
@@ -421,8 +416,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="text-center mt-12">
               <button 
                 onClick={() => onNavigate('galerie')}
-                className="group bg-gradient-to-r from-accent to-accent/80 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-accent/90 hover:to-accent/70 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105"
+                className="group relative bg-gradient-to-r from-accent to-accent/80 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-accent/90 hover:to-accent/70 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 <span className="flex items-center justify-center">
                   Alle Fotos ansehen
                   <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
