@@ -118,18 +118,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
             >
               <button
                 onMouseEnter={() => setShowThermeDropdown(true)}
-                className={`group flex items-center space-x-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
+                className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
                   currentPage === 'therme' 
                     ? 'bg-therme text-white shadow-xl' 
-                    : 'text-gray-700 hover:bg-white/70 hover:text-therme hover:shadow-lg'
+                    : 'text-gray-700 hover:bg-white/50 hover:text-therme hover:shadow-lg'
                 }`}
               >
-                <span className="relative z-10 flex items-center space-x-2">
-                  <span className="text-lg">🏊‍♀️</span>
-                  <span>Thermenreisen</span>
-                </span>
+                <span>🏊‍♀️ Thermenreisen</span>
                 <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showThermeDropdown ? 'rotate-180' : ''}`} />
-                <div className="absolute inset-0 bg-gradient-to-r from-therme/10 to-therme/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
               
               {showThermeDropdown && (
@@ -325,7 +321,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
           </nav>
 
           <div className="hidden lg:flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
-            <MapPin className="h-4 w-4 text-accent" />
+            <Globe className="h-4 w-4 text-accent" />
             <span className="text-gray-700 font-medium text-sm">platzl-reisen.at</span>
           </div>
         </div>
