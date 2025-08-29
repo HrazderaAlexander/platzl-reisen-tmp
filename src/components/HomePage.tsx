@@ -240,7 +240,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </h2>
             <div className="w-24 h-1.5 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Entdecken Sie, warum Tausende von Kunden uns vertrauen
+              {homepageData.features_untertitel}
             </p>
           </div>
           

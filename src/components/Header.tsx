@@ -78,6 +78,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                  setShowThermeDropdown(true);
                  setShowSightseeingDropdown(false);
                }}
+              onMouseLeave={() => setShowThermeDropdown(false)}
                 className={`flex items-center space-x-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
                   currentPage === 'therme' 
                     ? 'bg-therme text-white shadow-lg' 
@@ -184,6 +185,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                  setShowSightseeingDropdown(true);
                  setShowThermeDropdown(false);
                }}
+              onMouseLeave={() => setShowSightseeingDropdown(false)}
                 className={`flex items-center space-x-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
                   currentPage === 'sightseeing' 
                     ? 'bg-sightseeing text-white shadow-lg' 

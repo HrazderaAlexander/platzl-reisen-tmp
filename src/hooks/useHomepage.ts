@@ -7,6 +7,7 @@ interface HomepageData {
   hero_bilder: string[];
   diashow_geschwindigkeit: number;
   features_titel: string;
+  features_untertitel: string;
   features: Array<{
     titel: string;
     beschreibung: string;
@@ -39,6 +40,7 @@ export const useHomepage = () => {
     ],
     diashow_geschwindigkeit: 5000,
     features_titel: "Warum Platzl Reisen wählen?",
+    features_untertitel: "Entdecken Sie, warum Tausende von Kunden uns vertrauen",
     features: [
       {
         titel: "Erfahrene Reiseleitung",
@@ -91,6 +93,7 @@ export const useHomepage = () => {
             }).filter(url => url) || mockData.hero_bilder,
             diashow_geschwindigkeit: data.diashow_geschwindigkeit || mockData.diashow_geschwindigkeit,
             features_titel: data.features_titel || mockData.features_titel,
+            features_untertitel: data.features_untertitel || mockData.features_untertitel,
             features: data.features?.sort((a: any, b: any) => a.sortierung - b.sortierung) || mockData.features,
             cta_therme_text: data.cta_therme_text || mockData.cta_therme_text,
             cta_sightseeing_text: data.cta_sightseeing_text || mockData.cta_sightseeing_text,
