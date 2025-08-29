@@ -123,8 +123,13 @@ export const TripDetail: React.FC<TripDetailProps> = ({ trip, onBack }) => {
           </div>
 
           <p className="text-gray-700 mb-8 text-lg leading-relaxed">{hotel.description}</p>
-          <div className="text-gray-700 mb-8 text-lg leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400 transition-colors duration-300 pr-2">
-            {hotel.description}
+          <div className="text-gray-700 mb-8 text-base leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400 transition-colors duration-300 pr-2 bg-gray-50/50 rounded-xl p-4 border border-gray-100">
+            {hotel.description.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index < hotel.description.split('\n').length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </div>
 
           <div className="bg-primary/10 rounded-2xl p-6">
