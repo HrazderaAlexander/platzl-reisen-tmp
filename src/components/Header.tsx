@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bus, MapPin, ChevronDown, ArrowRight } from 'lucide-react';
+import { Bus, MapPin, ChevronDown, ArrowRight, Phone, Mail, Globe } from 'lucide-react';
 import { useTrips } from '../hooks/useTrips';
 
 interface HeaderProps {
@@ -40,14 +40,27 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center space-x-4">
-            <div className="bg-gradient-to-br from-accent to-accent/80 p-3 rounded-xl shadow-lg">
-              <Bus className="h-10 w-10 text-white" />
+            <div className="relative">
+              <img 
+                src="/20250210-0001-2-freisteller.png" 
+                alt="Platzl Reisen Logo" 
+                className="h-16 w-auto object-contain drop-shadow-lg hover:drop-shadow-xl transition-all duration-300 hover:scale-105"
+              />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-accent">
                 Platzl Reisen
               </h1>
-              <p className="text-gray-700 text-sm font-medium">📞 0732 / 27 27 17</p>
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-1 bg-white/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                  <Phone className="h-3 w-3 text-accent" />
+                  <span className="text-gray-700 text-xs font-medium">0732 / 27 27 17</span>
+                </div>
+                <div className="flex items-center space-x-1 bg-white/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                  <Mail className="h-3 w-3 text-accent" />
+                  <span className="text-gray-700 text-xs font-medium">linz@platzl-reisen.at</span>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -55,35 +68,47 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
           <nav className="hidden lg:flex items-center space-x-2">
             <button
               onClick={() => onNavigate('home')}
-              className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
                 currentPage === 'home' 
                   ? 'bg-accent text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/50 hover:text-accent hover:shadow-lg'
+                  : 'text-gray-700 hover:bg-white/70 hover:text-accent hover:shadow-lg'
               }`}
             >
-              🏠 Home
+              <span className="relative z-10 flex items-center space-x-2">
+                <span className="text-lg">🏠</span>
+                <span>Home</span>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             
             <button
               onClick={() => onNavigate('sonstiges')}
-              className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
                 currentPage === 'sonstiges' 
                   ? 'bg-gray-600 text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/50 hover:text-gray-600 hover:shadow-lg'
+                  : 'text-gray-700 hover:bg-white/70 hover:text-gray-600 hover:shadow-lg'
               }`}
             >
-              📋 Sonstiges
+              <span className="relative z-10 flex items-center space-x-2">
+                <span className="text-lg">📋</span>
+                <span>Sonstiges</span>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-600/10 to-gray-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             
             <button
               onClick={() => onNavigate('galerie')}
-              className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
                 currentPage === 'galerie' 
                   ? 'bg-purple-600 text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/50 hover:text-purple-600 hover:shadow-lg'
+                  : 'text-gray-700 hover:bg-white/70 hover:text-purple-600 hover:shadow-lg'
               }`}
             >
-              📸 Galerie
+              <span className="relative z-10 flex items-center space-x-2">
+                <span className="text-lg">📸</span>
+                <span>Galerie</span>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             
             {/* Thermenreisen Dropdown */}
