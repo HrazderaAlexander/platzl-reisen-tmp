@@ -123,6 +123,9 @@ export const TripDetail: React.FC<TripDetailProps> = ({ trip, onBack }) => {
           </div>
 
           <p className="text-gray-700 mb-8 text-lg leading-relaxed">{hotel.description}</p>
+          <div className="text-gray-700 mb-8 text-lg leading-relaxed whitespace-pre-line">
+            {hotel.description}
+          </div>
 
           <div className="bg-primary/10 rounded-2xl p-6">
             <h4 className="text-xl font-bold mb-4 flex items-center">
@@ -569,7 +572,12 @@ export const TripDetail: React.FC<TripDetailProps> = ({ trip, onBack }) => {
                     </h3>
                     
                     <p className="text-gray-600 line-clamp-3 mb-6 leading-relaxed text-sm">
-                      {hotel.description}
+                      {hotel.description.split('\n').map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          {index < hotel.description.split('\n').length - 1 && <br />}
+                        </React.Fragment>
+                      ))}
                     </p>
                     
                     {/* Hotel Icons from Strapi */}
