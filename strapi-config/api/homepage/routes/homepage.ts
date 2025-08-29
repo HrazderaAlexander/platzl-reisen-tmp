@@ -3,7 +3,7 @@ export default {
     {
       method: 'GET',
       path: '/homepage',
-      handler: 'homepage.find',
+      handler: 'homepage.findOne',
       config: {
         policies: [],
         middlewares: [],
@@ -19,36 +19,9 @@ export default {
       },
     },
     {
-      method: 'POST',
-      path: '/homepage',
-      handler: 'homepage.create',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
-      method: 'PUT',
-      path: '/homepage/:id',
-      handler: 'homepage.update',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
       method: 'PUT',
       path: '/homepage',
       handler: 'homepage.update',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
-      method: 'DELETE',
-      path: '/homepage/:id',
-      handler: 'homepage.delete',
       config: {
         policies: [],
         middlewares: [],

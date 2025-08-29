@@ -4,50 +4,46 @@
   "info": {
     "singularName": "homepage",
     "pluralName": "homepages",
-    "displayName": "Homepage Konfiguration",
-    "description": "Konfiguration für die Homepage"
+    "displayName": "Homepage",
+    "description": "Homepage Inhalte und Einstellungen"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
     "hero_titel": {
       "type": "string",
       "required": true,
-      "default": "Platzl Reisen",
-      "maxLength": 255
+      "default": "Platzl Reisen"
     },
     "hero_untertitel": {
-      "type": "string",
+      "type": "text",
       "required": true,
-      "default": "Platz(l) nehmen und wohlfühlen",
-      "maxLength": 500
+      "default": "Platz(l) nehmen und wohlfühlen"
     },
     "hero_bilder": {
       "type": "media",
       "multiple": true,
-      "required": false,
+      "required": true,
       "allowedTypes": ["images"]
     },
     "diashow_geschwindigkeit": {
       "type": "integer",
       "required": true,
       "default": 5000,
-      "min": 1000,
+      "min": 2000,
       "max": 10000
     },
     "features_titel": {
       "type": "string",
       "required": true,
-      "default": "Warum Platzl Reisen wählen?",
-      "maxLength": 255
+      "default": "Warum Platzl Reisen wählen?"
     },
     "features_untertitel": {
-      "type": "string",
+      "type": "text",
       "required": true,
-      "default": "Entdecken Sie, warum Tausende von Kunden uns vertrauen",
-      "maxLength": 500
+      "default": "Entdecken Sie, warum Tausende von Kunden uns vertrauen"
     },
     "features": {
       "type": "component",
@@ -57,20 +53,17 @@
     "cta_therme_text": {
       "type": "string",
       "required": true,
-      "default": "Jetzt buchen",
-      "maxLength": 100
+      "default": "Jetzt buchen"
     },
     "cta_sightseeing_text": {
       "type": "string",
       "required": true,
-      "default": "Mehr erfahren",
-      "maxLength": 100
+      "default": "Mehr erfahren"
     },
     "telefon": {
       "type": "string",
       "required": true,
-      "default": "0732 27 27 17",
-      "maxLength": 50
+      "default": "0732 27 27 17"
     },
     "email": {
       "type": "email",
