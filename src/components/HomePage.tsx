@@ -373,10 +373,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
                 Unsere schönsten Reisefotos
               </h2>
-              <div className="w-24 h-1.5 bg-gradient-to-r from-purple-600 to-purple-500 mx-auto rounded-full mb-4"></div>
+              <div className="w-24 h-1.5 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren
               </p>
@@ -430,7 +430,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="text-center mt-16">
               <button 
                 onClick={() => onNavigate('galerie')}
-                className="group relative bg-gradient-to-r from-purple-600 to-purple-700 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+                className="group relative bg-gradient-to-r from-accent to-accent/80 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:from-accent/80 hover:to-accent transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 <span className="relative z-10 flex items-center justify-center">
