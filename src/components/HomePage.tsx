@@ -163,47 +163,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="absolute bottom-20 left-1/3 w-28 h-28 bg-accent/5 rounded-full animate-bounce delay-700"></div>
         </div>
 
-        {/* Navigation Controls */}
-        <button
-          onClick={prevImage}
-          className="absolute left-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
-        >
-          <ChevronLeft className="h-6 w-6 group-hover:-translate-x-0.5 transition-transform duration-300" />
-        </button>
-        
-        <button
-          onClick={nextImage}
-          className="absolute right-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
-        >
-          <ChevronRight className="h-6 w-6 group-hover:translate-x-0.5 transition-transform duration-300" />
-        </button>
-
-        {/* Play/Pause Button */}
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="absolute right-8 bottom-32 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
-        >
-          {isPlaying ? (
-            <Pause className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
-          ) : (
-            <Play className="h-5 w-5 ml-0.5 group-hover:scale-110 transition-transform duration-300" />
-          )}
-        </button>
-
-        {/* Dot Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 shadow-2xl">
-          {homepageData.hero_bilder.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToImage(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-125 ${
-                index === currentImageIndex 
-                  ? 'bg-white scale-125 shadow-lg ring-2 ring-white/50' 
-                  : 'bg-white/50 hover:bg-white/80'
-              }`}
-            />
-          ))}
-        </div>
 
         {/* Hero Content - Centered */}
         <div className="relative container mx-auto px-4 min-h-screen flex items-center justify-center z-10">
@@ -214,7 +173,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </h1>
             
             {/* Slogan */}
-            <p className="text-xl md:text-3xl text-orange-400 font-medium mb-16 tracking-wide drop-shadow-lg">
+            <p className="text-xl md:text-3xl text-accent font-medium mb-16 tracking-wide drop-shadow-lg">
               {homepageData.hero_untertitel}
             </p>
             
@@ -224,14 +183,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 href={`tel:${homepageData.telefon.replace(/\s/g, '')}`}
                 className="group flex items-center space-x-3 bg-white/15 backdrop-blur-sm px-8 py-4 rounded-2xl border border-white/30 hover:bg-white/25 transition-all duration-300 hover:scale-105 shadow-xl"
               >
-                <Phone className="h-6 w-6 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
+                <Phone className="h-6 w-6 text-accent group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-white font-medium text-lg">{homepageData.telefon}</span>
               </a>
               <a 
                 href={`mailto:${homepageData.email}`}
                 className="group flex items-center space-x-3 bg-white/15 backdrop-blur-sm px-8 py-4 rounded-2xl border border-white/30 hover:bg-white/25 transition-all duration-300 hover:scale-105 shadow-xl"
               >
-                <Mail className="h-6 w-6 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
+                <Mail className="h-6 w-6 text-accent group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-white font-medium text-lg">{homepageData.email}</span>
               </a>
             </div>
@@ -240,7 +199,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="flex flex-col sm:flex-row gap-8 justify-center">
               <button 
                 onClick={() => onNavigate('therme')}
-                className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white px-12 py-5 rounded-2xl font-bold text-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 overflow-hidden"
+                className="group relative bg-gradient-to-r from-accent to-accent/80 text-white px-12 py-5 rounded-2xl font-bold text-xl hover:from-accent/90 hover:to-accent transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 <span className="relative z-10 flex items-center justify-center">
@@ -264,17 +223,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Scroll Indicator - Enhanced */}
-        <div className="absolute bottom-8 left-8 z-10 group">
-          <div className="animate-bounce">
-            <div className="w-8 h-12 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10 group-hover:border-white group-hover:bg-white/20 transition-all duration-300">
-              <div className="w-1.5 h-4 bg-white/80 rounded-full mt-2 animate-pulse group-hover:bg-white transition-colors duration-300"></div>
-            </div>
-          </div>
-          <div className="mt-2 text-white/70 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
-            Scrollen
-          </div>
-        </div>
       </section>
 
       {/* Features Section - Enhanced */}
