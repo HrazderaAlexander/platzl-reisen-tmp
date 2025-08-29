@@ -13,6 +13,9 @@ interface HomepageData {
     icon: string;
     sortierung: number;
   }>;
+  galerie_titel: string;
+  galerie_untertitel: string;
+  galerie_button_text: string;
   cta_therme_text: string;
   cta_sightseeing_text: string;
   telefon: string;
@@ -92,6 +95,9 @@ export const useHomepage = () => {
             diashow_geschwindigkeit: data.diashow_geschwindigkeit || mockData.diashow_geschwindigkeit,
             features_titel: data.features_titel || mockData.features_titel,
             features: data.features?.sort((a: any, b: any) => a.sortierung - b.sortierung) || mockData.features,
+            galerie_titel: data.galerie_titel || mockData.galerie_titel,
+            galerie_untertitel: data.galerie_untertitel || mockData.galerie_untertitel,
+            galerie_button_text: data.galerie_button_text || mockData.galerie_button_text,
             cta_therme_text: data.cta_therme_text || mockData.cta_therme_text,
             cta_sightseeing_text: data.cta_sightseeing_text || mockData.cta_sightseeing_text,
             telefon: data.telefon || mockData.telefon,
