@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Bus, MapPin, ChevronDown, ArrowRight, Phone, Mail, Globe } from 'lucide-react';
+import { Bus, MapPin, ChevronDown, ArrowRight, Phone, Mail, Globe, Menu, X } from 'lucide-react';
 import { useTrips } from '../hooks/useTrips';
 
 interface HeaderProps {
-  currentPage: 'home' | 'therme' | 'sightseeing' | 'trip';
-  onNavigate: (page: 'home' | 'therme' | 'sightseeing') => void;
+  currentPage: 'home' | 'therme' | 'sightseeing' | 'trip' | 'galerie' | 'sonstiges';
+  onNavigate: (page: 'home' | 'therme' | 'sightseeing' | 'galerie' | 'sonstiges') => void;
   onTripSelect?: (trip: any) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripSelect }) => {
   const [showThermeDropdown, setShowThermeDropdown] = useState(false);
   const [showSightseeingDropdown, setShowSightseeingDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   const { trips: thermeTrips } = useTrips('therme');
   const { trips: sightseeingTrips } = useTrips('sightseeing');
@@ -29,86 +30,57 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
   const handleTripClick = (trip: any) => {
     setShowThermeDropdown(false);
     setShowSightseeingDropdown(false);
+    setShowMobileMenu(false);
     if (onTripSelect) {
       onTripSelect(trip);
     }
   };
 
+  const handleNavigateAndClose = (page: any) => {
+    setShowMobileMenu(false);
+    onNavigate(page);
+  };
+
   return (
-    <header className="bg-primary shadow-xl border-b-4 border-accent relative z-50">
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between">
-          {/* Logo Section */}
-          <div className="flex items-center space-x-4">
+    <header className="bg-primary shadow-lg border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo Section - Modernized */}
+          <div 
+            className="flex items-center space-x-4 cursor-pointer group"
+            onClick={() => onNavigate('home')}
+          >
             <div className="relative">
               <img 
                 src="/20250210-0001-2-freisteller.png" 
                 alt="Platzl Reisen Logo" 
-                className="h-16 w-auto object-contain drop-shadow-lg hover:drop-shadow-xl transition-all duration-300 hover:scale-105"
+                className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 drop-shadow-md"
               />
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-accent">
+            <div className="hidden sm:block">
+              <h1 className="text-2xl font-bold text-accent leading-tight">
                 Platzl Reisen
               </h1>
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-1 bg-white/50 backdrop-blur-sm px-2 py-1 rounded-full">
-                  <Phone className="h-3 w-3 text-accent" />
-                  <span className="text-gray-700 text-xs font-medium">0732 / 27 27 17</span>
-                </div>
-                <div className="flex items-center space-x-1 bg-white/50 backdrop-blur-sm px-2 py-1 rounded-full">
-                  <Mail className="h-3 w-3 text-accent" />
-                  <span className="text-gray-700 text-xs font-medium">linz@platzl-reisen.at</span>
-                </div>
-              </div>
+              <p className="text-gray-600 text-sm font-medium">
+                Ihr Reisepartner seit 1990
+              </p>
             </div>
           </div>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-2">
+          {/* Desktop Navigation - Clean & Modern */}
+          <nav className="hidden lg:flex items-center space-x-1">
             <button
               onClick={() => onNavigate('home')}
-              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
+              className={`px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 relative overflow-hidden ${
                 currentPage === 'home' 
-                  ? 'bg-accent text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/70 hover:text-accent hover:shadow-lg'
+                  ? 'bg-accent text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-white/80 hover:text-accent hover:shadow-md'
               }`}
             >
               <span className="relative z-10 flex items-center space-x-2">
-                <span className="text-lg">🏠</span>
+                <span>🏠</span>
                 <span>Home</span>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-            
-            <button
-              onClick={() => onNavigate('sonstiges')}
-              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
-                currentPage === 'sonstiges' 
-                  ? 'bg-gray-600 text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/70 hover:text-gray-600 hover:shadow-lg'
-              }`}
-            >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span className="text-lg">📋</span>
-                <span>Sonstiges</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-600/10 to-gray-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-            
-            <button
-              onClick={() => onNavigate('galerie')}
-              className={`group px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
-                currentPage === 'galerie' 
-                  ? 'bg-purple-600 text-white shadow-xl' 
-                  : 'text-gray-700 hover:bg-white/70 hover:text-purple-600 hover:shadow-lg'
-              }`}
-            >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span className="text-lg">📸</span>
-                <span>Galerie</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             
             {/* Thermenreisen Dropdown */}
@@ -118,13 +90,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
             >
               <button
                 onMouseEnter={() => setShowThermeDropdown(true)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+                className={`flex items-center space-x-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
                   currentPage === 'therme' 
-                    ? 'bg-therme text-white shadow-xl' 
-                    : 'text-gray-700 hover:bg-white/50 hover:text-therme hover:shadow-lg'
+                    ? 'bg-therme text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-white/80 hover:text-therme hover:shadow-md'
                 }`}
               >
-                <span>🏊‍♀️ Thermenreisen</span>
+                <span>🏊‍♀️</span>
+                <span>Thermenreisen</span>
                 <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showThermeDropdown ? 'rotate-180' : ''}`} />
               </button>
               
@@ -134,7 +107,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                   onMouseEnter={() => setShowThermeDropdown(true)}
                   onMouseLeave={() => setShowThermeDropdown(false)}
                 >
-                  {/* Header */}
                   <div className="bg-gradient-to-r from-therme to-therme/80 px-4 py-3 text-white">
                     <div className="flex items-center space-x-2">
                       <div className="bg-white/20 p-1.5 rounded-lg">
@@ -148,7 +120,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                   </div>
                   
                   <div className="py-3">
-                    {/* Alle anzeigen Button */}
                     <button
                       onClick={() => {
                         onNavigate('therme');
@@ -174,7 +145,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                       </div>
                     </button>
                     
-                    {/* Beliebte Reisen */}
                     {thermeTrips.length > 0 && (
                       <>
                         <div className="px-4 py-2 bg-gray-50">
@@ -222,13 +192,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
             >
               <button
                 onMouseEnter={() => setShowSightseeingDropdown(true)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+                className={`flex items-center space-x-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
                   currentPage === 'sightseeing' 
-                    ? 'bg-sightseeing text-white shadow-xl' 
-                    : 'text-gray-700 hover:bg-white/50 hover:text-sightseeing hover:shadow-lg'
+                    ? 'bg-sightseeing text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-white/80 hover:text-sightseeing hover:shadow-md'
                 }`}
               >
-                <span>🏛️ Besichtigungsreisen</span>
+                <span>🏛️</span>
+                <span>Besichtigungsreisen</span>
                 <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showSightseeingDropdown ? 'rotate-180' : ''}`} />
               </button>
               
@@ -238,7 +209,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                   onMouseEnter={() => setShowSightseeingDropdown(true)}
                   onMouseLeave={() => setShowSightseeingDropdown(false)}
                 >
-                  {/* Header */}
                   <div className="bg-gradient-to-r from-sightseeing to-sightseeing/80 px-4 py-3 text-white">
                     <div className="flex items-center space-x-2">
                       <div className="bg-white/20 p-1.5 rounded-lg">
@@ -252,7 +222,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                   </div>
                   
                   <div className="py-3">
-                    {/* Alle anzeigen Button */}
                     <button
                       onClick={() => {
                         onNavigate('sightseeing');
@@ -278,7 +247,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                       </div>
                     </button>
                     
-                    {/* Beliebte Reisen */}
                     {sightseeingTrips.length > 0 && (
                       <>
                         <div className="px-4 py-2 bg-gray-50">
@@ -318,67 +286,155 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                 </div>
               )}
             </div>
+
+            {/* Other Navigation Items */}
+            <button
+              onClick={() => onNavigate('galerie')}
+              className={`px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+                currentPage === 'galerie' 
+                  ? 'bg-purple-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-white/80 hover:text-purple-600 hover:shadow-md'
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+                <span>📸</span>
+                <span>Galerie</span>
+              </span>
+            </button>
+            
+            <button
+              onClick={() => onNavigate('sonstiges')}
+              className={`px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+                currentPage === 'sonstiges' 
+                  ? 'bg-gray-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-white/80 hover:text-gray-600 hover:shadow-md'
+              }`}
+            >
+              <span className="flex items-center space-x-2">
+                <span>📋</span>
+                <span>Sonstiges</span>
+              </span>
+            </button>
           </nav>
 
-          <div className="hidden lg:flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
-            <Globe className="h-4 w-4 text-accent" />
-            <span className="text-gray-700 font-medium text-sm">platzl-reisen.at</span>
+          {/* Contact Info - Modernized */}
+          <div className="hidden xl:flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              <a 
+                href="tel:0732272717"
+                className="flex items-center space-x-2 bg-white/60 hover:bg-white/80 px-4 py-2 rounded-xl transition-all duration-300 hover:shadow-md group"
+              >
+                <Phone className="h-4 w-4 text-accent group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-gray-700 font-medium text-sm">0732 / 27 27 17</span>
+              </a>
+              <a 
+                href="mailto:linz@platzl-reisen.at"
+                className="flex items-center space-x-2 bg-white/60 hover:bg-white/80 px-4 py-2 rounded-xl transition-all duration-300 hover:shadow-md group"
+              >
+                <Mail className="h-4 w-4 text-accent group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-gray-700 font-medium text-sm">linz@platzl-reisen.at</span>
+              </a>
+            </div>
+            
+            <div className="flex items-center space-x-2 bg-accent/10 px-3 py-2 rounded-xl">
+              <Globe className="h-4 w-4 text-accent" />
+              <span className="text-accent font-medium text-sm">platzl-reisen.at</span>
+            </div>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="lg:hidden p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-300"
+          >
+            {showMobileMenu ? (
+              <X className="h-6 w-6 text-gray-700" />
+            ) : (
+              <Menu className="h-6 w-6 text-gray-700" />
+            )}
+          </button>
         </div>
         
         {/* Mobile Navigation */}
-        <nav className="lg:hidden mt-6 flex flex-wrap gap-3">
-          <button
-            onClick={() => onNavigate('home')}
-            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
-              currentPage === 'home' 
-                ? 'bg-accent text-white shadow-lg' 
-                : 'text-gray-700 hover:bg-white/50 hover:text-accent'
-            }`}
-          >
-            🏠 Home
-          </button>
-          <button
-            onClick={() => onNavigate('therme')}
-            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
-              currentPage === 'therme' 
-                ? 'bg-therme text-white shadow-lg' 
-                : 'text-gray-700 hover:bg-white/50 hover:text-therme'
-            }`}
-          >
-            🏊‍♀️ Thermen
-          </button>
-          <button
-            onClick={() => onNavigate('sightseeing')}
-            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
-              currentPage === 'sightseeing' 
-                ? 'bg-sightseeing text-white shadow-lg' 
-                : 'text-gray-700 hover:bg-white/50 hover:text-sightseeing'
-            }`}
-          >
-            🏛️ Besichtigung
-          </button>
-          <button
-            onClick={() => onNavigate('sonstiges')}
-            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
-              currentPage === 'sonstiges' 
-                ? 'bg-gray-600 text-white shadow-lg' 
-                : 'text-gray-700 hover:bg-white/50 hover:text-gray-600'
-            }`}
-          >
-            📋 Sonstiges
-          </button>
-          <button
-            onClick={() => onNavigate('galerie')}
-            className={`px-4 py-2 text-xs rounded-lg font-medium transition-all duration-300 ${
-              currentPage === 'galerie' 
-                ? 'bg-purple-600 text-white shadow-lg' 
-                : 'text-gray-700 hover:bg-white/50 hover:text-purple-600'
-            }`}
-          >
-            📸 Galerie
-          </button>
-        </nav>
+        {showMobileMenu && (
+          <div className="lg:hidden py-4 border-t border-gray-200 bg-white/90 backdrop-blur-sm rounded-b-2xl mt-2 shadow-lg animate-in slide-in-from-top-4 duration-300">
+            <nav className="flex flex-col space-y-2">
+              <button
+                onClick={() => handleNavigateAndClose('home')}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  currentPage === 'home' 
+                    ? 'bg-accent text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>🏠</span>
+                <span>Home</span>
+              </button>
+              <button
+                onClick={() => handleNavigateAndClose('therme')}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  currentPage === 'therme' 
+                    ? 'bg-therme text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>🏊‍♀️</span>
+                <span>Thermenreisen</span>
+              </button>
+              <button
+                onClick={() => handleNavigateAndClose('sightseeing')}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  currentPage === 'sightseeing' 
+                    ? 'bg-sightseeing text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>🏛️</span>
+                <span>Besichtigungsreisen</span>
+              </button>
+              <button
+                onClick={() => handleNavigateAndClose('galerie')}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  currentPage === 'galerie' 
+                    ? 'bg-purple-600 text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>📸</span>
+                <span>Galerie</span>
+              </button>
+              <button
+                onClick={() => handleNavigateAndClose('sonstiges')}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  currentPage === 'sonstiges' 
+                    ? 'bg-gray-600 text-white shadow-lg' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>📋</span>
+                <span>Sonstiges</span>
+              </button>
+            </nav>
+            
+            {/* Mobile Contact Info */}
+            <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
+              <a 
+                href="tel:0732272717"
+                className="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-300"
+              >
+                <Phone className="h-4 w-4 text-accent" />
+                <span className="font-medium text-sm">0732 / 27 27 17</span>
+              </a>
+              <a 
+                href="mailto:linz@platzl-reisen.at"
+                className="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-300"
+              >
+                <Mail className="h-4 w-4 text-accent" />
+                <span className="font-medium text-sm">linz@platzl-reisen.at</span>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

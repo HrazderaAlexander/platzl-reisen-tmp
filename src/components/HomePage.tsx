@@ -137,7 +137,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       )}
       
       {/* Hero Section with Slideshow */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative min-h-screen overflow-hidden">
         {/* Background Slideshow */}
         <div className="absolute inset-0">
           <div className="relative w-full h-full">
@@ -149,131 +149,177 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               }`}
             />
             {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/40" />
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
           </div>
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-20 w-32 h-32 bg-white/5 rounded-full animate-pulse"></div>
+          <div className="absolute top-40 left-20 w-24 h-24 bg-accent/10 rounded-full animate-bounce delay-1000"></div>
+          <div className="absolute bottom-40 right-40 w-20 h-20 bg-white/10 rounded-full animate-pulse delay-500"></div>
+          <div className="absolute bottom-20 left-1/3 w-28 h-28 bg-accent/5 rounded-full animate-bounce delay-700"></div>
         </div>
 
         {/* Navigation Controls */}
         <button
           onClick={prevImage}
-          className="absolute left-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-xl border border-white/20"
+          className="absolute left-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-6 w-6 group-hover:-translate-x-0.5 transition-transform duration-300" />
         </button>
         
         <button
           onClick={nextImage}
-          className="absolute right-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-xl border border-white/20"
+          className="absolute right-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-6 w-6 group-hover:translate-x-0.5 transition-transform duration-300" />
         </button>
 
         {/* Play/Pause Button */}
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className="absolute right-8 bottom-24 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-xl border border-white/20"
+          className="absolute right-8 bottom-32 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 shadow-2xl border border-white/20 group"
         >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
+          {isPlaying ? (
+            <Pause className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
+          ) : (
+            <Play className="h-5 w-5 ml-0.5 group-hover:scale-110 transition-transform duration-300" />
+          )}
         </button>
 
         {/* Dot Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-10 bg-black/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 shadow-2xl">
           {homepageData.hero_bilder.map((_, index) => (
             <button
               key={index}
               onClick={() => goToImage(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-125 ${
                 index === currentImageIndex 
-                  ? 'bg-white scale-125 shadow-lg' 
-                  : 'bg-white/40 hover:bg-white/70 hover:scale-110'
+                  ? 'bg-white scale-125 shadow-lg ring-2 ring-white/50' 
+                  : 'bg-white/50 hover:bg-white/80'
               }`}
             />
           ))}
         </div>
 
         {/* Hero Content - Centered */}
-        <div className="relative container mx-auto px-4 h-full flex items-center justify-center z-10">
-          <div className="text-center max-w-4xl">
+        <div className="relative container mx-auto px-4 min-h-screen flex items-center justify-center z-10">
+          <div className="text-center max-w-5xl">
             {/* Main Title */}
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 text-white leading-tight tracking-tight">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-white leading-tight tracking-tight drop-shadow-2xl">
               {homepageData.hero_titel}
             </h1>
             
             {/* Slogan */}
-            <p className="text-xl md:text-2xl text-orange-400 font-medium mb-12 tracking-wide">
+            <p className="text-xl md:text-3xl text-orange-400 font-medium mb-16 tracking-wide drop-shadow-lg">
               {homepageData.hero_untertitel}
             </p>
             
             {/* Contact Information */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-16">
-              <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                <Phone className="h-5 w-5 text-orange-400" />
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-20">
+              <a 
+                href={`tel:${homepageData.telefon.replace(/\s/g, '')}`}
+                className="group flex items-center space-x-3 bg-white/15 backdrop-blur-sm px-8 py-4 rounded-2xl border border-white/30 hover:bg-white/25 transition-all duration-300 hover:scale-105 shadow-xl"
+              >
+                <Phone className="h-6 w-6 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-white font-medium text-lg">{homepageData.telefon}</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                <Mail className="h-5 w-5 text-orange-400" />
+              </a>
+              <a 
+                href={`mailto:${homepageData.email}`}
+                className="group flex items-center space-x-3 bg-white/15 backdrop-blur-sm px-8 py-4 rounded-2xl border border-white/30 hover:bg-white/25 transition-all duration-300 hover:scale-105 shadow-xl"
+              >
+                <Mail className="h-6 w-6 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-white font-medium text-lg">{homepageData.email}</span>
-              </div>
+              </a>
             </div>
             
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="flex flex-col sm:flex-row gap-8 justify-center">
               <button 
                 onClick={() => onNavigate('therme')}
-                className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-10 py-4 rounded-full font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 hover:scale-105 backdrop-blur-sm border border-orange-400/20"
+                className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white px-12 py-5 rounded-2xl font-bold text-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 overflow-hidden"
               >
-                <span className="flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                <span className="relative z-10 flex items-center justify-center">
+                  <span className="mr-3 text-2xl">🏊‍♀️</span>
                   {homepageData.cta_therme_text}
-                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="h-6 w-6 ml-3 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </button>
               <button 
                 onClick={() => onNavigate('sightseeing')}
-                className="group bg-white/10 backdrop-blur-md text-white px-10 py-4 rounded-full font-semibold text-lg hover:bg-white/20 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 hover:scale-105 border border-white/30"
+                className="group relative bg-white/15 backdrop-blur-md text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white/25 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 border border-white/30 overflow-hidden"
               >
-                <span className="flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                <span className="relative z-10 flex items-center justify-center">
+                  <span className="mr-3 text-2xl">🏛️</span>
                   {homepageData.cta_sightseeing_text}
-                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="h-6 w-6 ml-3 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-8 animate-bounce z-10">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center backdrop-blur-sm">
-            <div className="w-1 h-3 bg-white/75 rounded-full mt-2 animate-pulse"></div>
+        {/* Scroll Indicator - Enhanced */}
+        <div className="absolute bottom-8 left-8 z-10 group">
+          <div className="animate-bounce">
+            <div className="w-8 h-12 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10 group-hover:border-white group-hover:bg-white/20 transition-all duration-300">
+              <div className="w-1.5 h-4 bg-white/80 rounded-full mt-2 animate-pulse group-hover:bg-white transition-colors duration-300"></div>
+            </div>
+          </div>
+          <div className="mt-2 text-white/70 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+            Scrollen
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-primary/20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+      {/* Features Section - Enhanced */}
+      <section className="py-24 bg-gradient-to-b from-white via-primary/10 to-white relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-20 w-40 h-40 bg-accent/5 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-20 left-20 w-32 h-32 bg-primary/20 rounded-full animate-bounce delay-1000"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
               {homepageData.features_titel}
             </h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full"></div>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Entdecken Sie, warum Tausende von Kunden uns vertrauen
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {homepageData.features.map((feature, index) => {
               const IconComponent = getIconComponent(feature.icon);
               return (
-                <div key={index} className="text-center group">
-                  <div className="bg-gradient-to-br from-primary to-primary/60 p-5 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:from-accent group-hover:to-accent/80 transition-all duration-500 group-hover:scale-110 shadow-xl group-hover:shadow-2xl">
-                    <IconComponent className="h-7 w-7 text-accent group-hover:text-white transition-colors duration-500" />
+                <div 
+                  key={index} 
+                  className="text-center group relative"
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  {/* Background Card */}
+                  <div className="absolute inset-0 bg-white rounded-3xl shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:-translate-y-2 opacity-0 group-hover:opacity-100"></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10 p-8">
+                    <div className="bg-gradient-to-br from-accent to-accent/80 p-6 rounded-3xl w-20 h-20 flex items-center justify-center mx-auto mb-8 group-hover:from-accent/90 group-hover:to-accent/70 transition-all duration-500 group-hover:scale-110 shadow-xl group-hover:shadow-2xl group-hover:rotate-3">
+                      <IconComponent className="h-8 w-8 text-white transition-all duration-500 group-hover:scale-110" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-4 text-gray-800 group-hover:text-accent transition-colors duration-300">
+                      {feature.titel}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                      {feature.beschreibung}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold mb-3 text-gray-800 group-hover:text-accent transition-colors duration-300">
-                    {feature.titel}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed text-sm">
-                    {feature.beschreibung}
-                  </p>
                 </div>
               );
             })}
@@ -281,73 +327,86 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-20 bg-gradient-to-b from-primary/20 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+      {/* Categories Section - Enhanced */}
+      <section className="py-24 bg-gradient-to-b from-white via-primary/20 to-primary/10 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-40 left-10 w-36 h-36 bg-therme/5 rounded-full animate-pulse delay-500"></div>
+          <div className="absolute bottom-40 right-10 w-28 h-28 bg-sightseeing/5 rounded-full animate-bounce delay-1000"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
               Unsere Reisekategorien
             </h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full"></div>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Wählen Sie zwischen Wellness und Kultur
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <div 
-              className="group bg-white rounded-3xl shadow-2xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-500 hover:shadow-3xl border border-gray-100"
+              className="group bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-500 hover:shadow-3xl border border-gray-100 relative"
               onClick={() => onNavigate('therme')}
             >
-              <div className="h-40 bg-gradient-to-br from-therme to-therme/60 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+              {/* Floating Badge */}
+              <div className="absolute top-6 right-6 bg-therme text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg z-10">
+                Wellness
+              </div>
+              
+              <div className="h-48 bg-gradient-to-br from-therme via-therme/80 to-therme/60 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full -translate-y-20 translate-x-20"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-16 -translate-x-16"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="text-3xl mb-2">🏊‍♀️</div>
-                </div>
-                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <span className="text-white font-medium text-sm">Wellness</span>
+                <div className="absolute bottom-6 left-6 text-white">
+                  <div className="text-4xl mb-2">🏊‍♀️</div>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-gray-800 group-hover:text-therme transition-colors duration-300">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold mb-4 text-gray-800 group-hover:text-therme transition-colors duration-300">
                   Thermenreisen
                 </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed text-sm">
+                <p className="text-gray-600 mb-6 leading-relaxed">
                   Entspannung pur in den schönsten Thermalquellen Europas. 
                   Wellness, Gesundheit und Erholung in erstklassigen Hotels.
                 </p>
-                <div className="flex items-center text-therme font-semibold group-hover:text-therme/80 transition-colors duration-300 text-sm">
+                <div className="flex items-center text-therme font-bold group-hover:text-therme/80 transition-colors duration-300">
                   <span>{homepageData.cta_therme_text}</span>
-                  <ArrowRight className="h-4 w-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </div>
             </div>
 
             <div 
-              className="group bg-white rounded-3xl shadow-2xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-500 hover:shadow-3xl border border-gray-100"
+              className="group bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-500 hover:shadow-3xl border border-gray-100 relative"
               onClick={() => onNavigate('sightseeing')}
             >
-              <div className="h-40 bg-gradient-to-br from-sightseeing to-sightseeing/60 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+              {/* Floating Badge */}
+              <div className="absolute top-6 right-6 bg-sightseeing text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg z-10">
+                Kultur
+              </div>
+              
+              <div className="h-48 bg-gradient-to-br from-sightseeing via-sightseeing/80 to-sightseeing/60 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full -translate-y-20 translate-x-20"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-16 -translate-x-16"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="text-3xl mb-2">🏛️</div>
-                </div>
-                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <span className="text-white font-medium text-sm">Kultur</span>
+                <div className="absolute bottom-6 left-6 text-white">
+                  <div className="text-4xl mb-2">🏛️</div>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-gray-800 group-hover:text-sightseeing transition-colors duration-300">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold mb-4 text-gray-800 group-hover:text-sightseeing transition-colors duration-300">
                   Besichtigungsreisen
                 </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed text-sm">
+                <p className="text-gray-600 mb-6 leading-relaxed">
                   Kulturelle Höhepunkte und historische Schätze entdecken. 
                   Geführte Touren zu den faszinierendsten Orten Europas.
                 </p>
-                <div className="flex items-center text-sightseeing font-semibold group-hover:text-sightseeing/80 transition-colors duration-300 text-sm">
+                <div className="flex items-center text-sightseeing font-bold group-hover:text-sightseeing/80 transition-colors duration-300">
                   <span>{homepageData.cta_sightseeing_text}</span>
-                  <ArrowRight className="h-4 w-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </div>
             </div>
@@ -355,21 +414,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Featured Gallery Section */}
+      {/* Featured Gallery Section - Enhanced */}
       {featuredImages.length > 0 && (
-        <section className="py-20 bg-gradient-to-b from-white to-primary/20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+        <section className="py-24 bg-gradient-to-b from-primary/10 to-white relative overflow-hidden">
+          {/* Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 right-20 w-44 h-44 bg-purple-500/5 rounded-full animate-pulse"></div>
+            <div className="absolute bottom-20 left-20 w-36 h-36 bg-accent/5 rounded-full animate-bounce delay-700"></div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 bg-clip-text text-transparent">
                 Unsere schönsten Reisefotos
               </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-accent to-accent/80 mx-auto rounded-full mb-4"></div>
-              <p className="text-gray-600 text-sm max-w-2xl mx-auto">
+              <div className="w-24 h-1.5 bg-gradient-to-r from-purple-600 to-purple-500 mx-auto rounded-full mb-4"></div>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren
-              </p>
+              </div>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
               {featuredImages.slice(0, 8).map((image, index) => (
                 <div
                   key={image.id}
@@ -377,32 +442,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     setSelectedImage(image);
                     setCurrentGalleryIndex(index);
                   }}
-                  className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                  className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100 cursor-pointer relative"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
+                  {/* Image Container */}
                   <div className="relative aspect-square overflow-hidden">
                     <img
                       src={image.bild_url}
                       alt={image.titel}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
                     {/* Favorit Badge */}
-                    <div className="absolute top-2 right-2 bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">
+                    <div className="absolute top-3 right-3 bg-yellow-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-lg">
                       ⭐
                     </div>
                     
                     {/* View Icon */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg">
-                        <Eye className="h-4 w-4" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="bg-white/20 backdrop-blur-sm text-white p-3 rounded-2xl transform scale-75 group-hover:scale-100 transition-transform duration-300 shadow-xl">
+                        <Eye className="h-6 w-6" />
                       </div>
                     </div>
                     
                     {/* Info Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <h3 className="font-semibold text-sm mb-1">{image.titel}</h3>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="font-bold text-sm mb-1">{image.titel}</h3>
                       <div className="flex items-center text-xs">
                         <MapPin className="h-3 w-3 mr-1" />
                         <span>{image.ort}</span>
@@ -413,15 +479,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               ))}
             </div>
             
-            <div className="text-center mt-12">
+            <div className="text-center mt-16">
               <button 
                 onClick={() => onNavigate('galerie')}
-                className="group relative bg-gradient-to-r from-accent to-accent/80 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-accent/90 hover:to-accent/70 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+                className="group relative bg-gradient-to-r from-purple-600 to-purple-700 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                <span className="flex items-center justify-center">
+                <span className="relative z-10 flex items-center justify-center">
+                  <span className="mr-3 text-xl">📸</span>
                   Alle Fotos ansehen
-                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="h-5 w-5 ml-3 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </button>
             </div>
