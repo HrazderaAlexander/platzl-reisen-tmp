@@ -431,7 +431,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="w-24 h-1.5 bg-gradient-to-r from-purple-600 to-purple-500 mx-auto rounded-full mb-4"></div>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Lassen Sie sich von den Eindrücken unserer Busreisen inspirieren
-              </div>
+              </p>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
