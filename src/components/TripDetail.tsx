@@ -81,7 +81,7 @@ export const TripDetail: React.FC<TripDetailProps> = ({ trip, onBack }) => {
 
   const renderHotelModal = (hotel: Hotel) => (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
-      <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
+      <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
         <div className="relative">
           <img
             src={getHotelImageUrl(hotel)}
@@ -122,14 +122,21 @@ export const TripDetail: React.FC<TripDetailProps> = ({ trip, onBack }) => {
             </div>
           </div>
 
-          <p className="text-gray-700 mb-8 text-lg leading-relaxed">{hotel.description}</p>
-          <div className="text-gray-700 mb-8 text-base leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400 transition-colors duration-300 pr-2 bg-gray-50/50 rounded-xl p-4 border border-gray-100">
-            {hotel.description.split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                {index < hotel.description.split('\n').length - 1 && <br />}
-              </React.Fragment>
-            ))}
+          <div className="mb-8">
+            <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <Info className="h-5 w-5 mr-2 text-accent" />
+              Hotelbeschreibung
+            </h4>
+            <div className="bg-gray-50/50 rounded-xl p-6 border border-gray-100 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400 transition-colors duration-300">
+              <div className="text-gray-700 text-base leading-relaxed whitespace-pre-line pr-2">
+                {hotel.description.split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < hotel.description.split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="bg-primary/10 rounded-2xl p-6">
