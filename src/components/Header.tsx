@@ -47,21 +47,19 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
         <div className="flex items-center justify-between h-20">
           {/* Logo Section - Modernized */}
           <div 
-            className="flex items-center space-x-4 cursor-pointer group"
+            className="flex items-center space-x-3 cursor-pointer group"
             onClick={() => onNavigate('home')}
           >
-            <div className="relative">
-              <img 
-                src="/20250210-0001-2-freisteller.png" 
-                alt="Platzl Reisen Logo" 
-                className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 drop-shadow-md"
-              />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold text-accent leading-tight">
+            <img 
+              src="/20250210-0001-2-freisteller.png" 
+              alt="Platzl Reisen Logo" 
+              className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 drop-shadow-md"
+            />
+            <div>
+              <h1 className="text-xl font-bold text-accent leading-tight">
                 Platzl Reisen
               </h1>
-              <p className="text-gray-600 text-sm font-medium">
+              <p className="text-gray-600 text-xs font-medium">
                 Ihr Reisepartner seit 1990
               </p>
             </div>
@@ -69,20 +67,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
           
           {/* Desktop Navigation - Clean & Modern */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <button
-              onClick={() => onNavigate('home')}
-              className={`px-6 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 relative overflow-hidden ${
-                currentPage === 'home' 
-                  ? 'bg-accent text-white shadow-lg' 
-                  : 'text-gray-700 hover:bg-white/80 hover:text-accent hover:shadow-md'
-              }`}
-            >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span>🏠</span>
-                <span>Home</span>
-              </span>
-            </button>
-            
             {/* Thermenreisen Dropdown */}
             <div 
               className="relative"
@@ -317,31 +301,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
             </button>
           </nav>
 
-          {/* Contact Info - Modernized */}
-          <div className="hidden xl:flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <a 
-                href="tel:0732272717"
-                className="flex items-center space-x-2 bg-white/60 hover:bg-white/80 px-4 py-2 rounded-xl transition-all duration-300 hover:shadow-md group"
-              >
-                <Phone className="h-4 w-4 text-accent group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-gray-700 font-medium text-sm">0732 / 27 27 17</span>
-              </a>
-              <a 
-                href="mailto:linz@platzl-reisen.at"
-                className="flex items-center space-x-2 bg-white/60 hover:bg-white/80 px-4 py-2 rounded-xl transition-all duration-300 hover:shadow-md group"
-              >
-                <Mail className="h-4 w-4 text-accent group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-gray-700 font-medium text-sm">linz@platzl-reisen.at</span>
-              </a>
-            </div>
-            
-            <div className="flex items-center space-x-2 bg-accent/10 px-3 py-2 rounded-xl">
-              <Globe className="h-4 w-4 text-accent" />
-              <span className="text-accent font-medium text-sm">platzl-reisen.at</span>
-            </div>
-          </div>
-
           {/* Mobile Menu Button */}
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
@@ -359,17 +318,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
         {showMobileMenu && (
           <div className="lg:hidden py-4 border-t border-gray-200 bg-white/90 backdrop-blur-sm rounded-b-2xl mt-2 shadow-lg animate-in slide-in-from-top-4 duration-300">
             <nav className="flex flex-col space-y-2">
-              <button
-                onClick={() => handleNavigateAndClose('home')}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                  currentPage === 'home' 
-                    ? 'bg-accent text-white shadow-lg' 
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <span>🏠</span>
-                <span>Home</span>
-              </button>
               <button
                 onClick={() => handleNavigateAndClose('therme')}
                 className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
@@ -415,24 +363,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onTripS
                 <span>Sonstiges</span>
               </button>
             </nav>
-            
-            {/* Mobile Contact Info */}
-            <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
-              <a 
-                href="tel:0732272717"
-                className="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-300"
-              >
-                <Phone className="h-4 w-4 text-accent" />
-                <span className="font-medium text-sm">0732 / 27 27 17</span>
-              </a>
-              <a 
-                href="mailto:linz@platzl-reisen.at"
-                className="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-300"
-              >
-                <Mail className="h-4 w-4 text-accent" />
-                <span className="font-medium text-sm">linz@platzl-reisen.at</span>
-              </a>
-            </div>
           </div>
         )}
       </div>
