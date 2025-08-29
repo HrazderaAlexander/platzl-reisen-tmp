@@ -435,7 +435,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 <span className="relative z-10 flex items-center justify-center">
                   <span className="mr-3 text-xl">📸</span>
-                  Alle Fotos ansehen
+                  {homepageData.galerie_button_text}
                   <ArrowRight className="h-5 w-5 ml-3 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </button>
