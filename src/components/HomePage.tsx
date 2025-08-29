@@ -437,7 +437,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               alt={selectedImage.titel}
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             />
-            
             {featuredImages.length > 1 && (
               <>
                 <button
